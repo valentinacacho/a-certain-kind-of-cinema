@@ -1,0 +1,1927 @@
+/* I keep my base styles first, followed by the cinema layout and newer features. */
+
+/* I keep the main colours, spacing and fonts together so I can adjust them in one place. */
+:root {
+  --color-background: #1c1410;
+  --color-surface: #2a1f18;
+  --color-surface-light: #36291f;
+  --color-border: #4a3a2c;
+  --color-text: #f5e9d8;
+  --color-muted: #c4ae93;
+  --color-dark-text: #1c1410;
+  --color-white: #ffffff;
+
+  /* I use the same warm gold accent throughout the page for a consistent cinema palette. */
+  --accent: #f0b46a;
+
+  --font-title: "Fraunces", Georgia, serif;
+  --font-body: "DM Sans", Arial, sans-serif;
+
+  --radius: 1.25rem;
+  --radius-small: 0.75rem;
+  --space-small: 0.75rem;
+  --space-medium: 1.5rem;
+  --space-large: 3rem;
+
+  --shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  /* I add a soft glow using the warm gold accent. */
+  background-image: radial-gradient(ellipse at top, color-mix(in srgb, var(--accent) 27%, transparent) 0%, transparent 60%);
+  background-repeat: no-repeat;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+main {
+  width: min(90%, 60rem);
+  margin-inline: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+/* I use a repeating pattern to suggest a strip of film at the top. */
+.film-strip {
+  height: 1rem;
+  background: repeating-linear-gradient(90deg, var(--color-border) 0 1.1rem, var(--color-background) 1.1rem 1.9rem);
+}
+
+/* I arrange the title, introduction and saved-film counter in the header. */
+.site-header {
+  width: min(90%, 60rem);
+  margin-inline: auto;
+  padding: var(--space-large) 0 var(--space-medium);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-medium);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(3rem, 10vw, 5rem);
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+.tagline {
+  max-width: 34rem;
+  margin: var(--space-small) 0 0;
+  color: var(--color-muted);
+  font-size: 1.15rem;
+}
+
+.watchlist-counter {
+  margin: 0;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  font-weight: 700;
+}
+
+.watchlist-counter span {
+  display: inline-block;
+  min-width: 1.6rem;
+  margin-left: 0.4rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background-color: var(--accent);
+  color: var(--color-dark-text);
+  text-align: center;
+}
+
+/* I group the questionnaire into clear sections. */
+.questionnaire {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+}
+
+fieldset {
+  margin: 0;
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow);
+}
+
+legend {
+  padding: 0 0.5rem;
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.hint {
+  display: block;
+  margin: 0 0 var(--space-small);
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+/* I visually hide the inputs while keeping them available to keyboard users.
+   The labels act as the visible controls. */
+.tile input,
+.chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+/* I lay out the platform names in selectable tiles. */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: var(--space-small);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-light);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+}
+
+/* I use :has() to highlight a tile when its checkbox is selected. */
+.tile:has(input:checked) {
+  border-color: var(--accent);
+  box-shadow: 0 0 1.5rem color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.tile-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.tile:has(input:checked) .tile-name::after {
+  content: " ✓";
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* I reuse these platform colours for the logos and the smaller film badges. */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.55rem;
+  border-radius: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.brand-netflix { background-color: #000000; color: #e50914; }
+.brand-prime { background-color: #0f2a43; color: #4cc3ff; }
+.brand-disney { background-color: #0b1f5c; color: #ffffff; }
+.brand-hbo { background-color: #3b1a8f; color: #ffffff; }
+.brand-movistar { background-color: #0a5a7a; color: #ffffff; }
+.brand-apple { background-color: #111111; color: #ffffff; }
+.brand-sky { background-color: #1d1d3b; color: #b9c4ff; }
+
+.logo.brand-netflix { letter-spacing: 0.2rem; text-transform: uppercase; }
+.logo.brand-disney { font-family: var(--font-title); }
+
+/* I style the genre and mood choices as compact selectable labels. */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-small);
+}
+
+.chip {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.chip span {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface-light);
+  font-weight: 500;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.chip:hover span {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.chip input:checked + span {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: var(--color-dark-text);
+}
+
+select {
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-light);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+/* I style the main action and secondary buttons here. */
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-medium);
+  padding: 1rem var(--space-medium);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+.summary-count {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.summary-hint {
+  margin: 0.25rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+#match-count {
+  margin-right: 0.4rem;
+  font-family: var(--font-title);
+  font-size: 2.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.form-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-small);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+#surprise-button {
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: var(--radius-small);
+  background-color: var(--accent);
+  color: var(--color-dark-text);
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: transform 0.2s;
+}
+
+#surprise-button:hover {
+  transform: translateY(-1px);
+}
+
+.secondary-button {
+  padding: 0.8rem 1.8rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: transparent;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.secondary-button:hover {
+  border-color: var(--accent);
+}
+
+/* I add a visible outline so keyboard users can follow the focused control. */
+.tile:has(input:focus-visible),
+.chip:has(input:focus-visible) span,
+select:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* I arrange the recommendation headings and movie grid. */
+.results,
+.spotlight,
+.watchlist {
+  margin-top: var(--space-large);
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  color: var(--accent);
+}
+
+#message {
+  margin: 0.25rem 0 0;
+  color: var(--color-muted);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: var(--space-medium);
+  margin: var(--space-medium) 0;
+}
+
+/* I give each genre a pair of fallback poster colours. */
+.genre-horror { --poster-1: #3a0f12; --poster-2: #b03036; }
+.genre-documentary { --poster-1: #2f4a18; --poster-2: #76a63f; }
+.genre-animation { --poster-1: #14503a; --poster-2: #3fb27a; }
+.genre-fantasy { --poster-1: #3a1f5a; --poster-2: #9a66e0; }
+.genre-action { --poster-1: #5a2a14; --poster-2: #d0601f; }
+.genre-sci-fi { --poster-1: #0f3a4a; --poster-2: #2f9ab8; }
+.genre-thriller { --poster-1: #2b1d4a; --poster-2: #6a45a8; }
+.genre-romance { --poster-1: #5a1d3a; --poster-2: #d0508a; }
+.genre-romcom { --poster-1: #5a1d3a; --poster-2: #e0709a; }
+.genre-comedy { --poster-1: #5a4a10; --poster-2: #d8aa22; }
+.genre-family { --poster-1: #5a3a14; --poster-2: #d8923f; }
+.genre-drama { --poster-1: #1f3350; --poster-2: #4a73b0; }
+
+/* I use the flipped class to swap a card between its poster and details. */
+.result-card {
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.result-card:hover {
+  transform: translateY(-6px);
+}
+
+.poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-small);
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(160deg, var(--poster-1), var(--poster-2));
+  color: var(--color-white);
+  text-align: left;
+  box-shadow: var(--shadow);
+}
+
+/* I add two circles to the fallback poster while a real image is unavailable. */
+.poster::before,
+.poster::after {
+  content: "";
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+}
+
+.poster::before {
+  top: 2.5rem;
+  right: -2.5rem;
+  width: 10rem;
+  height: 10rem;
+}
+
+.poster::after {
+  top: 4.5rem;
+  right: -0.5rem;
+  width: 6rem;
+  height: 6rem;
+}
+
+/* I let the real photo fill the poster and hide the fallback decoration. */
+.poster.has-photo {
+  background-size: cover;
+  background-position: center;
+}
+
+.poster.has-photo::before,
+.poster.has-photo::after {
+  display: none;
+}
+
+/* I show the TMDB rating at the top left when a rating has loaded. */
+.rating {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  padding: 0.05rem 0.6rem;
+  border-radius: 0.4rem;
+  background-color: rgba(10, 6, 4, 0.78);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+}
+
+.rating:empty {
+  display: none;
+}
+
+/* I use a dark fade behind the title so it remains readable over a photo. */
+.poster-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3.5rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(10, 6, 4, 0.92) 30%, rgba(10, 6, 4, 0));
+}
+
+.poster-info {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f0e2cc;
+  text-transform: capitalize;
+}
+
+.poster-title {
+  display: block;
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.6rem;
+}
+
+.card-back {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  padding: 1rem;
+  overflow: auto;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-light);
+  box-shadow: var(--shadow);
+}
+
+.result-card.flipped .poster {
+  display: none;
+}
+
+.result-card.flipped .card-back {
+  display: flex;
+}
+
+.card-back h3 {
+  margin: 0;
+  padding-right: 2.5rem;
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.card-back p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.card-back .small {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.match-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.match-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background-color: var(--color-background);
+  overflow: hidden;
+}
+
+.match-bar div {
+  height: 100%;
+  background-color: var(--accent);
+}
+
+.card-back .secondary-button {
+  margin-top: auto;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* I keep the heart button separate from the poster click area. */
+.heart-button {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(10, 6, 4, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-button svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: none;
+  stroke: var(--color-white);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.heart-button.saved svg {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+/* I keep styles for the base spotlight section; the cinema screen handles the current pick. */
+.spotlight {
+  padding: var(--space-medium);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--poster-1), var(--poster-2));
+  box-shadow: var(--shadow);
+}
+
+.spotlight p {
+  margin: 0;
+}
+
+.spotlight-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.spotlight-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-white);
+}
+
+.spotlight-platforms {
+  margin-top: 0.5rem;
+  font-weight: 700;
+}
+
+/* I keep the base watchlist styles here; cinema.css styles the DVD shelf. */
+.watchlist {
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+.watchlist h2 {
+  font-size: 1.75rem;
+}
+
+.watchlist-item {
+  padding: 0.5rem 1.1rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background-color: var(--color-surface-light);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* I separate the footer and credits from the main page. */
+.site-footer {
+  width: min(90%, 60rem);
+  margin: var(--space-large) auto 0;
+  padding: var(--space-medium) 0;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+}
+
+/* I turn off transitions for visitors who prefer less movement. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+
+  .tile:hover,
+  .chip:hover span,
+  .result-card:hover,
+  #surprise-button:hover {
+    transform: none;
+  }
+}
+
+
+/* I keep my cinema styling after the base styles so the same overrides still apply. */
+/* I build on my base colours and fonts here to create the cinema setting. */
+body{background-image:radial-gradient(ellipse at 50% 0,color-mix(in srgb,var(--accent) 15%,transparent),transparent 60rem)}
+
+/* I keep the personal title and introduction above the cinema. */
+.site-header{padding:2.2rem 0 1.5rem;align-items:center}.site-header h1{font-size:3.8rem}.tagline{font-size:1rem;max-width:35rem}.brand-eyebrow,.cinema-eyebrow{font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:var(--color-muted);margin:0 0 .5rem}.watchlist-counter{text-decoration:none;color:var(--color-text);font-size:.85rem}.film-strip{height:.7rem}
+
+/* I place a short introduction just before the screen. */
+.cinema-intro{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;margin-bottom:.9rem}.cinema-intro h2{font-size:1.5rem}.cinema-intro p{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin:0;color:var(--color-muted)}
+
+/* I use dark surfaces and burgundy folds to suggest a small theatre. */
+.cinema{position:relative;isolation:isolate;padding:0 2.6rem;background:#180f10;box-shadow:0 1rem 2.5rem #0006;border-radius:45% 45% .2rem .2rem / .4rem .4rem .2rem .2rem;overflow:hidden;margin-bottom:.6rem}.cinema-marquee{height:2.4rem;display:flex;align-items:center;justify-content:center;gap:1.4rem;color:var(--accent);font-size:.58rem;letter-spacing:.3em;border-bottom:1px solid #e9b87833}.cinema-marquee:before,.cinema-marquee:after{content:'• • • • •';letter-spacing:.55em;font-size:.6rem;color:#b99965}.cinema-curtain{position:absolute;top:2.4rem;bottom:0;width:2.6rem;z-index:2;background:repeating-linear-gradient(90deg,#381719 0,#662729 7px,#84362f 13px,#592025 20px,#301417 26px);filter:brightness(.85);transition:filter .4s}.cinema-curtain-left{left:0;clip-path:polygon(0 0,100% 0,76% 65%,90% 100%,0 100%)}.cinema-curtain-right{right:0;transform:scaleX(-1)}
+
+/* I arrange the featured film text beside its photo poster. */
+.cinema-screen{min-height:21rem;position:relative;display:grid;grid-template-columns:minmax(0,1fr) 11rem;gap:2rem;padding:2.3rem;background:#111416;border:5px solid #090b0c;box-shadow:inset 0 0 3rem #000;overflow:hidden}.cinema-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 55% 40%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 80%);pointer-events:none}.cinema-copy{position:relative;align-self:center;z-index:1}.cinema-copy .cinema-eyebrow{color:var(--accent);font-size:.6rem}.cinema-title{font-family:var(--font-title);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05;font-weight:600;letter-spacing:-.035em;color:#f5e9d8;margin:0 0 .7rem}.cinema-note{font-size:.86rem;line-height:1.6;color:#d0c3b1;max-width:28rem;margin:.6rem 0 1rem}.cinema-meta{font-size:.72rem;color:#b7aa97}.cinema-platforms{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}.cinema-platforms .badge{font-size:.65rem}.cinema-image-wrap{position:relative;align-self:center;width:11rem;aspect-ratio:2/3;background:linear-gradient(145deg,#4d3e2c,#191b23);box-shadow:0 .7rem 2rem #0009;transform:rotate(2deg);display:grid;place-items:center}.cinema-image-wrap img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}.cinema-image-wrap span{font-family:var(--font-title);font-style:italic;font-size:1.4rem;text-align:center;padding:1rem;color:var(--accent)}.cinema-image-wrap:after{content:'';position:absolute;inset:0;border:1px solid #ffffff15;pointer-events:none}.cinema-save{border:1px solid var(--accent);border-radius:2px;background:var(--accent);color:var(--color-dark-text);padding:.55rem .9rem;font-size:.75rem;font-weight:700}.cinema-seats{height:2.7rem;display:flex;gap:.5rem;justify-content:center;align-items:flex-end;background:linear-gradient(#1c1418,#100c0e);overflow:hidden}.cinema-seats span{width:2.7rem;height:1.7rem;flex-shrink:0;border-radius:.85rem .85rem 0 0;background:linear-gradient(100deg,#2a171d,#54282d 65%,#30181d);box-shadow:0 -1px 0 #91444e33;transform:translateY(.4rem)}.cinema-seats span:nth-child(even){height:2rem}.cinema-caption{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between;color:var(--color-muted);margin:.7rem 0 2.2rem}
+
+/* I introduce the questionnaire and keep its sections compact. */
+.questionnaire-intro{margin-bottom:1.2rem}.questionnaire-intro h2{font-size:2rem}.questionnaire-intro p{margin:.2rem 0 0;color:var(--color-muted);font-size:.9rem}.questionnaire{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.questionnaire fieldset{padding:1.1rem 1.25rem 1.25rem;border-radius:.5rem;box-shadow:none;min-width:0}.questionnaire fieldset:first-child,.questionnaire fieldset:nth-child(2),.summary{grid-column:1/-1}.questionnaire legend{font-size:1.15rem}.questionnaire .hint{font-size:.79rem;margin-bottom:.7rem}.questionnaire .tiles{grid-template-columns:repeat(7,minmax(0,1fr));gap:.5rem}.questionnaire .tile{border-width:1px;padding:.35rem;gap:.2rem;border-radius:.3rem}.questionnaire .logo{font-size:.82rem;height:2.7rem;border-radius:.15rem}.questionnaire .logo.brand-netflix{font-size:.7rem;letter-spacing:.05rem}.questionnaire .tile-name{font-size:.6rem;text-align:center}.questionnaire .options{gap:.45rem}.questionnaire .chip span{font-size:.78rem;padding:.35rem .7rem;border-width:1px;border-radius:.25rem}.questionnaire fieldset:nth-child(3){grid-column:1/-1}.questionnaire select{font-size:.85rem;padding:.6rem}.summary{border-radius:.5rem;padding:.8rem 1rem}.summary-count{font-size:.9rem}#match-count{font-size:2rem}.summary-hint{font-size:.75rem}#surprise-button,#reset-button{font-size:.8rem;padding:.65rem .9rem;border-radius:.25rem}
+
+/* I keep the movie posters in a grid with hearts and details on the back. */
+.results{margin-top:2.3rem}.results h2{font-size:2rem}.results #message,.results>.hint{font-size:.82rem}.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.2rem}.poster,.card-back{border-radius:.35rem}.poster-title{font-size:1.35rem}.poster-info{font-size:.65rem}.poster-bottom .badge{font-size:.6rem}.card-back{overflow:auto}.card-back h3{font-size:1.15rem}.card-back p{font-size:.8rem}.card-back .small{font-size:.7rem}.project-button{background:var(--accent);color:var(--color-dark-text);border:0;padding:.6rem;border-radius:.2rem;font-size:.75rem;font-weight:700}.card-back .secondary-button{font-size:.75rem}#more-button{font-size:.85rem;padding:.6rem 1rem}.heart-button{width:2.2rem;height:2.2rem}.heart-button svg{width:1.15rem;height:1.15rem}
+/* I turn the saved films into an expandable row of DVD cases. */
+.watchlist{padding:1.4rem 0;border:0;border-top:1px solid var(--color-border);border-radius:0;background:none}.watchlist-header{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}.watchlist h2{font-size:2rem}.watchlist .hint{font-size:.8rem}.watchlist-list{display:flex;align-items:flex-end;justify-content:center;gap:.2rem;border-bottom:8px solid #71503a;padding:1rem 1rem 0;min-height:13rem;flex-wrap:wrap;background:linear-gradient(0deg,#0002,transparent 80%)}.shelf-case{position:relative;min-width:2.2rem;width:3rem;height:11rem;border:0;border-left:3px solid #ffffff22;border-right:4px solid #0006;border-radius:2px 4px 0 0;background:var(--color-surface-light);color:var(--color-text);padding:0;overflow:hidden;box-shadow:-3px 0 6px #0005;transition:width .3s,transform .3s;text-align:left}.shelf-case[aria-pressed=true]{width:7.4rem;transform:translateY(-5px) rotate(-2deg)}.shelf-case img{width:100%;height:100%;object-fit:cover;opacity:.45}.shelf-case[aria-pressed=true] img{opacity:1}.shelf-spine{position:absolute;inset:.6rem auto .5rem .6rem;writing-mode:vertical-rl;font-family:var(--font-title);font-size:.86rem;text-shadow:0 1px 5px #000;background:#20130d99;padding:.2rem}.shelf-case[aria-pressed=true]:has(img:not([hidden])) .shelf-spine{display:none}.shelf-actions{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1rem}.shelf-actions p{font-size:.8rem;color:var(--color-muted);margin:0}.shelf-actions button{background:none;border:0;border-bottom:1px solid var(--color-muted);font-size:.75rem;color:var(--color-muted);padding:.2rem}.site-footer{margin-top:1.7rem;font-size:.7rem}.cinema-status{font-size:.8rem;color:var(--accent);min-height:1.2em}
+
+/* I rearrange the screen, form and cards when the available width gets smaller. */
+@media(max-width:650px){.site-header h1{font-size:3rem}.site-header{gap:1rem}.tagline{font-size:.9rem}.watchlist-counter{font-size:.75rem}.cinema-screen{grid-template-columns:minmax(0,1fr) 6rem;padding:1.3rem 1rem;gap:1rem;min-height:20rem}.cinema{padding:0 1.4rem}.cinema-curtain{width:1.4rem}.cinema-image-wrap{width:6rem}.cinema-title{font-size:1.9rem}.cinema-note{font-size:.75rem}.cinema-meta{font-size:.65rem}.cinema-marquee{font-size:.5rem;letter-spacing:.15em}.cinema-marquee:before,.cinema-marquee:after{content:'• •';letter-spacing:.3em}.cinema-intro p{font-size:.58rem}.questionnaire{grid-template-columns:1fr}.questionnaire fieldset{grid-column:1/-1}.questionnaire .tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.questionnaire .tile-name{font-size:.65rem}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.poster-title{font-size:1.15rem}.poster-bottom{padding:3rem .65rem .65rem}.card-back{padding:.7rem}.card-back h3{font-size:1rem}.cinema-caption{font-size:.5rem}.cinema-platforms .badge{font-size:.56rem}.summary-hint{max-width:22rem}}
+
+/* I simplify the smallest layout so the featured text still fits. */
+@media(max-width:380px){.cinema-screen{grid-template-columns:1fr}.cinema-image-wrap{width:6rem;position:absolute;right:.8rem;top:1.2rem;opacity:.22}.cinema-copy{z-index:1}.cinema-title{padding-right:1.4rem}.poster-title{font-size:1rem}.poster-bottom .badges{display:none}.cards{gap:.65rem}.questionnaire .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* I remove extra transitions when less motion is preferred. */
+@media(prefers-reduced-motion:reduce){.shelf-case{transition:none}}
+
+
+/* I let the longer website name scale to fit the header. */
+.site-header h1{font-size:clamp(2.4rem,6vw,4rem);letter-spacing:-.04em;line-height:.98}.site-header h1 em{font-weight:inherit}.site-header .tagline{max-width:35rem;margin-top:1rem}.cinema-intro h2{font-size:1.4rem}
+
+
+/* I reveal a film comment below its card while keeping the photo poster visible. */
+
+/* I let a revealed comment make its own card taller without stretching its neighbours. */
+.cards { align-items: start; }
+.cinema-feature-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .65rem; }
+.convince-feature, .convince-toggle {
+  font-family: var(--font-body);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: transparent;
+  border-radius: .25rem;
+  padding: .55rem .8rem;
+  min-height: 44px;
+}
+.convince-feature[aria-expanded="true"], .convince-toggle[aria-expanded="true"] {
+  background: var(--accent);
+  color: var(--color-dark-text);
+}
+.convince-card { padding-top: .7rem; }
+.convince-toggle { width: 100%; }
+
+/* I make the personal note stand out with a coloured margin and italic type. */
+.convince-comment {
+  margin-top: .65rem;
+  padding: .85rem .95rem;
+  border-left: 3px solid var(--accent);
+  background: var(--color-surface);
+  border-radius: 0 .25rem .25rem 0;
+}
+.convince-comment[hidden] { display: none; }
+.convince-label {
+  display: block;
+  color: var(--accent);
+  font-size: .65rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.convince-comment p {
+  margin: .45rem 0 0;
+  color: var(--color-text);
+  font-family: var(--font-title);
+  font-style: italic;
+  font-size: .95rem;
+  line-height: 1.55;
+}
+@media (hover: hover) {
+  .convince-feature:hover, .convince-toggle:hover {
+    background: var(--accent);
+    color: var(--color-dark-text);
+  }
+}
+
+
+/* I open the curtains on arrival and let the visitor open or close them afterward. */
+
+/* I keep the open curtains narrow and expand them to cover half the screen when closed. */
+.cinema { --curtain-width: 2.6rem; }
+.cinema-curtain {
+  width: var(--curtain-width);
+  clip-path: none;
+  transition: width 1050ms cubic-bezier(.65, 0, .25, 1);
+  box-shadow: .3rem 0 .8rem #0007;
+}
+.cinema.curtains-closed .cinema-curtain { width: calc(50% + 1px); }
+.cinema.is-entering .cinema-curtain {
+  animation: cinema-curtain-open 1400ms cubic-bezier(.65, 0, .25, 1) both;
+}
+
+/* I put a reachable curtain control under the cinema. */
+.curtain-toggle {
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  padding: .25rem .15rem;
+  min-height: 44px;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: .72rem;
+  letter-spacing: .02em;
+  text-transform: none;
+  flex-shrink: 0;
+}
+
+/* I start with the curtains together and pull them back toward the sides. */
+@keyframes cinema-curtain-open {
+  from { width: calc(50% + 1px); }
+  to { width: var(--curtain-width); }
+}
+@media (max-width: 650px) {
+  .cinema { --curtain-width: 1.4rem; }
+  .cinema-caption { flex-wrap: wrap; align-items: center; gap: .3rem .8rem; }
+  .curtain-toggle { font-size: .7rem; }
+}
+@media (max-width: 380px) {
+  .cinema-caption > span:last-child { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinema.is-entering .cinema-curtain { animation: none; }
+  .cinema-curtain { transition: none; }
+}
+
+/* I keep the moving audience in its own aisle below the film screen. */
+
+/* I leave room for the guests to walk without covering the film information. */
+.cinema-auditorium {
+  position: relative;
+  height: 5.1rem;
+  overflow: hidden;
+  background: linear-gradient(#1c1418, #100c0e);
+}
+.cinema-audience { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+/* I put the chair backs in front of the silhouettes so the guests look seated. */
+.cinema-auditorium .cinema-seats {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: transparent;
+}
+
+/* I use a zero-width anchor to place each person at the centre of a seat. */
+.audience-guest {
+  position: absolute;
+  bottom: .15rem;
+  width: 0;
+  height: 4.35rem;
+  --audience-coat: #30282c;
+  --audience-hair: #251e22;
+}
+.audience-guest-1 { --audience-coat: #463a39; --audience-hair: #33262a; }
+.audience-guest-2 { --audience-coat: #38353c; --audience-hair: #211d22; }
+.audience-guest-3 { --audience-coat: #4b3436; --audience-hair: #30252a; }
+.audience-guest-4 { --audience-coat: #393d36; --audience-hair: #292128; }
+
+/* I lower the whole figure for the seated pose; JavaScript animates the standing pose. */
+.audience-figure {
+  position: absolute;
+  left: -.75rem;
+  width: 1.5rem;
+  height: 4.35rem;
+  transform: translateY(1.15rem);
+  transform-origin: center 65%;
+}
+.audience-figure > span { position: absolute; display: block; }
+
+/* I draw the head and shoulders with rounded shapes and soft highlights. */
+.audience-head {
+  width: .84rem;
+  height: .95rem;
+  left: .33rem;
+  top: 0;
+  border-radius: 48% 48% 43% 43%;
+  background: var(--audience-hair);
+  box-shadow: inset 0 1px 0 #b79c8c25;
+  z-index: 2;
+}
+.audience-body {
+  left: .12rem;
+  top: .85rem;
+  width: 1.26rem;
+  height: 1.85rem;
+  border-radius: 48% 48% 20% 20%;
+  background: var(--audience-coat);
+  box-shadow: inset 1px 1px 0 #dbbd9c12;
+  z-index: 1;
+}
+
+/* I pivot the arms at the shoulder for walking and small hand gestures. */
+.audience-arm-left, .audience-arm-right {
+  top: 1.03rem;
+  width: .3rem;
+  height: 1.6rem;
+  background: var(--audience-coat);
+  border-radius: .3rem;
+  transform-origin: 50% .14rem;
+}
+.audience-arm-left { left: -.03rem; transform: rotate(6deg); }
+.audience-arm-right { right: -.03rem; transform: rotate(-6deg); }
+
+/* I pivot the legs at the hips while each guest walks along the aisle. */
+.audience-leg-left, .audience-leg-right {
+  top: 2.5rem;
+  width: .4rem;
+  height: 1.65rem;
+  border-radius: .1rem .1rem .18rem .18rem;
+  background: #241f24;
+  transform-origin: 50% .1rem;
+}
+.audience-leg-left { left: .26rem; }
+.audience-leg-right { right: .26rem; }
+
+/* I vary a few head shapes and clothing colours so the people are easier to tell apart. */
+.audience-guest-1 .audience-head { height: 1.13rem; border-radius: 50% 50% 25% 25%; }
+.audience-guest-3 .audience-head::after {
+  content: '';
+  position: absolute;
+  width: .4rem;
+  height: .4rem;
+  border-radius: 50%;
+  right: -.18rem;
+  top: .12rem;
+  background: var(--audience-hair);
+}
+.cinema-caption { align-items: center; flex-wrap: wrap; gap: .3rem 1rem; }
+.cinema-caption .curtain-toggle { min-height: 44px; }
+@media (max-width: 650px) {
+  .cinema-auditorium { height: 4.8rem; }
+}
+
+
+/* I keep the audience and chair backs in front of both curtain panels. */
+.cinema-auditorium {
+  z-index: 3;
+}
+
+/* I add a soft projector cone above the audience, behind the curtain panels. */
+.cinema-projector {
+  position: absolute;
+  top: 2.8rem;
+  bottom: 4.7rem;
+  left: var(--curtain-width);
+  right: var(--curtain-width);
+  z-index: 1;
+  overflow: hidden;
+  clip-path: polygon(49% 100%, 0 0, 100% 0, 51% 100%);
+  background: linear-gradient(to top, #f5deb817, #f5deb808 65%, transparent);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: .7;
+  transition: opacity 1s;
+}
+.cinema-projector-dust { position: absolute; inset: 0; }
+.projector-speck {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #f9e8bd;
+  box-shadow: 0 0 3px #f9e8bd55;
+  opacity: 0;
+}
+.cinema.curtains-closed .cinema-projector { opacity: 0; }
+
+/* I dim the surroundings gradually and give the selected film a little screen glow. */
+body { transition: background-color 1200ms ease; }
+body.cinema-lights-dimmed { background-color: #120d0a; }
+.cinema { transition: background-color 1200ms ease; }
+.cinema-screen { transition: box-shadow 1200ms ease; }
+.cinema-curtain { transition: width 1050ms cubic-bezier(.65, 0, .25, 1), filter 1200ms ease; }
+.cinema.is-showing { background-color: #0e090b; }
+.cinema.is-showing .cinema-curtain { filter: brightness(.68); }
+.cinema.is-showing .cinema-screen {
+  box-shadow: inset 0 0 3rem #000, 0 0 2.3rem color-mix(in srgb, var(--accent) 13%, transparent);
+}
+.cinema.is-showing .cinema-projector { opacity: 1; }
+.cinema.curtains-closed .cinema-projector { opacity: 0; }
+
+/* I use the same small red-and-cream striped bucket as the cinema theme. */
+.audience-popcorn {
+  right: -.38rem;
+  top: 1.62rem;
+  width: .62rem;
+  height: .8rem;
+  z-index: 4;
+  border-radius: .05rem .05rem .14rem .14rem;
+  background: repeating-linear-gradient(90deg, #a34f44 0 3px, #d9c5a5 3px 5px);
+  transform: rotate(-8deg);
+}
+.audience-popcorn::before {
+  content: '';
+  position: absolute;
+  left: -.02rem;
+  right: -.02rem;
+  top: -.18rem;
+  height: .3rem;
+  border-radius: 45%;
+  background: #e8d2a4;
+  box-shadow: .05rem -.06rem 0 -.01rem #f0deba;
+}
+
+/* I make the DVD cases lift forward, with a narrow glossy plastic edge. */
+.watchlist-list { perspective: 900px; padding-top: 1.9rem; }
+.shelf-case {
+  flex-shrink: 0;
+  transform-origin: center bottom;
+  transition: width 350ms ease, transform 350ms ease, box-shadow 350ms ease;
+}
+.shelf-case::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, #ffffff2e, transparent 12% 76%, #ffffff35 81%, #00000055 88%);
+  pointer-events: none;
+}
+.shelf-case img { opacity: .8; }
+.shelf-case[aria-pressed="true"], .shelf-case:focus-visible {
+  width: 7.6rem;
+  transform: translateY(-.8rem) rotateY(-10deg) rotate(-1.5deg);
+  box-shadow: -.3rem .7rem 1rem #0007;
+  z-index: 1;
+}
+.shelf-case[aria-pressed="true"] img, .shelf-case:focus-visible img { opacity: 1; }
+.shelf-case:focus-visible:has(img:not([hidden])) .shelf-spine { display: none; }
+@media (hover: hover) {
+  .shelf-case:hover {
+    width: 7.6rem;
+    transform: translateY(-.8rem) rotateY(-10deg) rotate(-1.5deg);
+    box-shadow: -.3rem .7rem 1rem #0007;
+    z-index: 1;
+  }
+  .shelf-case:hover img { opacity: 1; }
+  .shelf-case:hover:has(img:not([hidden])) .shelf-spine { display: none; }
+}
+
+/* I keep the lighting and shelf usable without movement for reduced-motion visitors. */
+@media (prefers-reduced-motion: reduce) {
+  body, .cinema, .cinema-screen, .cinema-curtain, .cinema-projector, .shelf-case { transition: none; }
+  .projector-speck { display: none; }
+}
+
+/* I blend the aisle into the stage instead of placing a hard dark rectangle over the curtain. */
+.cinema-auditorium {
+  background: transparent;
+  margin-inline: calc(-1 * var(--curtain-width));
+}
+.cinema-auditorium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, #100c0e38 40%, #100c0eb3 78%, #100c0e 100%);
+  pointer-events: none;
+}
+
+/* I keep the curtain control small, with a visible keyboard focus outline. */
+.curtain-toggle {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  padding: .4rem .9rem;
+}
+.curtain-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* I place a little striped popcorn bucket beside the form actions. */
+.form-buttons { align-items: center; }
+.snack-break { position: relative; flex-shrink: 0; width: 44px; height: 48px; }
+.popcorn-button {
+  position: relative;
+  width: 44px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: rotate(-5deg);
+}
+.popcorn-bucket {
+  position: absolute;
+  bottom: 1px;
+  left: 6px;
+  width: 32px;
+  height: 34px;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+  background: repeating-linear-gradient(90deg, #a84e43 0 6px, #ecd8b5 6px 12px);
+  color: #682d2c;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  display: grid;
+  place-items: center;
+}
+.popcorn-top {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  top: 6px;
+  left: 7px;
+  border-radius: 45%;
+  background: #efd5a3;
+  box-shadow: 8px -3px 0 #f8e7c1, 17px 0 0 #e7c88e, 4px 5px 0 #f8e7c1, 14px 5px 0 #efd5a3;
+}
+.popcorn-burst { position: absolute; left: 21px; top: 10px; pointer-events: none; z-index: 5; }
+.popcorn-kernel {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #f8e7c1;
+  box-shadow: 2px 1px 0 #c6a36e;
+  border-radius: 45% 55% 40% 55%;
+}
+.snack-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+
+/* I keep the platform lettering and names, using the same cream text as the page. */
+.questionnaire .tile .logo {
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+/* I mark selected platforms with the existing gold outline and checkmark. */
+.questionnaire .tile:has(input:checked) {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+
+/* I give the photo posters a fine gold frame, like the ones in a cinema lobby. */
+.result-card .poster.has-photo {
+  border: 1px solid #ac916159;
+  outline: 5px solid #100e0c;
+  outline-offset: -6px;
+}
+
+/* I sweep a soft reflection across the photo when someone hovers or uses the keyboard. */
+.result-card .poster.has-photo::after {
+  display: block;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(115deg, transparent 30%, #fff0 45%, #fff3 48%, #fff0 53%, transparent 70%);
+  transform: translateX(-110%);
+  transition: transform .65s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.result-card .poster.has-photo:focus-visible::after {
+  transform: translateX(110%);
+}
+.result-card:focus-within { transform: translateY(-6px); }
+@media (hover: hover) {
+  .result-card .poster.has-photo:hover::after { transform: translateX(110%); }
+}
+
+/* I keep the frame and skip the movement when less motion is preferred. */
+@media (prefers-reduced-motion: reduce) {
+  .result-card { transition: none; }
+  .result-card:hover, .result-card:focus-within { transform: none; }
+  .result-card .poster.has-photo::after { display: none; }
+}
+
+/* I use warm black, cream paper and muted gold for my cinema identity. */
+:root { --color-background:#171613; --color-surface:#24211b; --color-surface-light:#302a22; --color-border:#514736; --color-muted:#b8ad99; --accent:#d6ba82; }
+body { background-image:radial-gradient(ellipse at 50% 0,#51402b30,transparent 55rem); }
+.site-header, main, .site-footer { width:min(94%,80rem); }
+.site-header { padding:2rem 0; border-bottom:1px solid var(--color-border); margin-bottom:2rem; }
+.site-header h1 { font-size:clamp(2.2rem,5vw,4rem); }
+.film-strip { height:4px; background:var(--accent); }
+.cinema-intro { margin-top:1rem; }
+.cinema-intro h2 { color:var(--accent); font-style:italic; }
+
+/* I fill the screen with a film image and leave a dark gradient behind the text. */
+.cinema { --curtain-width:1.8rem; padding-inline:var(--curtain-width); border-radius:1rem 1rem .2rem .2rem; }
+.cinema-screen { min-height:clamp(34rem,58vw,44rem); display:flex; align-items:flex-end; padding:16rem 2.5rem 8rem; border:0; background:#131614; isolation:isolate; }
+.cinema-image-wrap { position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; transform:none; background:radial-gradient(ellipse at 60% 30%,#4e483b,#141714 75%); z-index:-2; box-shadow:none; }
+.cinema-image-wrap img { object-position:center 35%; }
+.cinema-image-wrap span { display:none; }
+.cinema-image-wrap::after { border:0; }
+.cinema-glow { z-index:-1; background:linear-gradient(0deg,#11120ff5 0%,#12130f80 35%,#12130f14 75%),linear-gradient(90deg,#11120f99,transparent 85%); }
+.cinema-copy { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:2rem; align-items:end; }
+.cinema-copy .cinema-eyebrow { grid-column:1; font: .65rem/1.5 var(--font-body); letter-spacing:.2em; color:#d8c99f; }
+.cinema-title { grid-column:1; font:600 clamp(3.5rem,8vw,7.5rem)/.92 var(--font-title); text-transform:uppercase; letter-spacing:-.02em; overflow-wrap:anywhere; margin:.5rem 0 1.5rem; max-width:18ch; }
+.cinema-meta { grid-column:1; padding-top:.7rem; border-top:1px solid #e6d9bb66; font:.65rem/1.8 var(--font-body); text-transform:uppercase; letter-spacing:.08em; }
+.cinema-platforms { grid-column:1; margin:.5rem 0 0; }
+.cinema-platforms .badge { background:transparent; color:#eee5d1; border:1px solid #eee5d144; }
+.cinema-feature-actions { grid-column:2; grid-row:2/5; display:flex; flex-direction:column; align-items:flex-end; }
+.cinema-feature-actions button { background:#11120f44; color:#eee5d1; border:1px solid #eee5d188; border-radius:0; font:.75rem/1.4 var(--font-body); padding:1rem 1.2rem; min-height:48px; }
+.cinema-feature-actions button:hover { background:#eee5d1; color:#221e18; }
+.cinema-note { position:relative; max-width:34rem; color:#e6d9bb; margin:1rem 0 0; }
+.cinema-screen:not(.has-feature) { flex-direction:column; justify-content:flex-end; align-items:stretch; }
+.cinema-screen.has-feature .cinema-note { position:absolute; z-index:3; top:12rem; right:2.2rem; width:min(23rem,70%); max-height:15rem; overflow:auto; margin:0; padding:1.4rem; background:#eee5d1; color:#40382c; box-shadow:0 12px 35px #0006; font:italic 1.1rem/1.55 var(--font-title); transform:rotate(-1deg); animation:personal-note-in .4s ease both; }
+@keyframes personal-note-in { from { opacity:0; transform:translateY(-16px) rotate(-3deg); } to { opacity:1; transform:translateY(0) rotate(-1deg); } }
+
+/* I print the title and collection number on a slightly crooked admission ticket. */
+.cinema-ticket { position:absolute; top:1.7rem; right:1.8rem; width:15rem; padding:1.2rem; color:#302b22; background:#eee7d6; transform:rotate(2deg); box-shadow:4px 7px 0 #d2c9b8,0 10px 30px #0004; z-index:2; clip-path:polygon(0 0,100% 0,100% 42%,97% 47%,100% 52%,100% 100%,0 100%,0 52%,3% 47%,0 42%); }
+.ticket-heading, .ticket-footer { display:flex; justify-content:space-between; gap:.5rem; font:.6rem/1.5 var(--font-body); letter-spacing:.15em; }
+.ticket-heading { padding-bottom:.8rem; border-bottom:1px dashed #8c8068; }
+.cinema-ticket strong { display:block; font:600 1.8rem/1 var(--font-title); text-transform:uppercase; margin:.9rem 0; overflow-wrap:anywhere; }
+.ticket-footer { border-top:1px solid #9e927b; padding-top:.5rem; letter-spacing:.04em; }
+.ticket-stamp { position:absolute; left:1rem; top:3rem; color:#863c32; padding:.35rem; border:3px double currentColor; transform:rotate(-13deg); background:#eee7d6ee; font:700 .8rem var(--font-body); letter-spacing:.1em; }
+.cinema-ticket.is-saved .ticket-stamp { animation:ticket-stamp-in .3s ease-out both; }
+@keyframes ticket-stamp-in { from { opacity:0; transform:scale(1.35) rotate(-18deg); } to { opacity:1; transform:scale(1) rotate(-13deg); } }
+/* I keep my audience and seat backs in front of both the image and the closed curtains. */
+.cinema-auditorium { margin-top:-5.1rem; pointer-events:none; }
+.cinema-caption { align-items:center; margin-bottom:1rem; }
+
+/* I make the next step a small invitation to enter the film programme. */
+.enter-programme { display:flex; justify-content:center; padding:1rem 0 3rem; }
+.enter-programme a, .return-cinema { color:var(--accent); background:none; border:1px solid var(--color-border); padding:.75rem 1.2rem; font:.8rem var(--font-body); text-decoration:none; transition:background .2s,color .2s; }
+.enter-programme a:hover, .return-cinema:hover { color:#211e18; background:var(--accent); }
+.return-cinema { display:inline-block; margin-bottom:2rem; }
+[hidden] { display:none !important; }
+
+/* I style the questionnaire as a printed programme, with neutral platform names. */
+.questionnaire-intro { border-top:1px solid var(--color-border); padding-top:1.4rem; }
+.questionnaire-intro h2 { font-size:clamp(2rem,4vw,3.3rem); letter-spacing:-.04em; }
+.questionnaire { background:#eee5d1; color:#302b22; padding:1.5rem; gap:1.5rem; box-shadow:6px 6px 0 #91806a40; border-radius:0; --color-text:#302b22; --color-muted:#655b4b; --color-surface:#e6dbc4; --color-surface-light:#e1d4bb; --color-border:#b9aa90; --accent:#765536; --color-dark-text:#fff8e7; }
+.questionnaire fieldset { border:0; border-top:1px solid #b9aa90; border-radius:0; padding:1rem 0; background:transparent; }
+.questionnaire legend { padding-right:1rem; }
+.questionnaire .tile { background:transparent; border:1px solid #b9aa90; border-radius:0; }
+.questionnaire .tile .logo { color:#302b22; background:transparent; }
+.questionnaire .chip span { background:transparent; border-radius:0; }
+.questionnaire select { color:#302b22; background:#f8f0df; border:1px solid #b9aa90; border-radius:0; }
+.questionnaire .summary { border:0; border-top:1px solid #b9aa90; border-radius:0; padding:1rem 0 0; background:transparent; }
+.questionnaire #surprise-button { background:#302b22; color:#eee5d1; border-radius:0; }
+.questionnaire #reset-button { background:transparent; color:#655b4b; }
+.results h2, .watchlist h2 { letter-spacing:-.035em; }
+.convince-toggle { border:0; border-bottom:1px solid var(--color-border); border-radius:0; text-align:left; font-family:var(--font-body); font-weight:400; }
+.convince-comment { background:#eee5d1; color:#40382c; border-left:0; transform:rotate(-1deg); box-shadow:3px 3px 0 #0004; }
+.site-footer { position:relative; margin:3rem auto 2rem; border-top:1px solid var(--color-border); }
+.site-footer .end-title { font:italic 3.5rem var(--font-title); color:var(--accent); margin:1rem 0; }
+.exit-link { position:absolute; right:0; top:2rem; color:var(--accent); border:1px solid var(--color-border); padding:.3rem .8rem; text-decoration:none; font:.8rem var(--font-body); letter-spacing:.2em; }
+:focus-visible { outline:2px solid var(--accent); outline-offset:5px; }
+
+/* I keep the ticket, text and controls clear on smaller screens. */
+@media(max-width:700px) {
+  .cinema { --curtain-width:1.2rem; }
+  .cinema-screen { min-height:42rem; padding:14rem 1.1rem 7.5rem; }
+  .cinema-ticket { width:12rem; right:1rem; top:1.2rem; padding:1rem; }
+  .cinema-ticket strong { font-size:1.5rem; }
+  .cinema-copy { grid-template-columns:1fr; gap:0; }
+  .cinema-title { font-size:clamp(2.8rem,12vw,5rem); max-width:100%; }
+  .cinema-feature-actions { grid-column:1; grid-row:auto; flex-direction:row; flex-wrap:wrap; margin-top:1rem; }
+  .cinema-feature-actions button { padding:.7rem; font-size:.65rem; }
+  .cinema-screen.has-feature .cinema-note { top:11rem; right:1rem; max-height:13rem; width:calc(100% - 2rem); }
+  .cinema-intro { flex-direction:column; gap:.4rem; }
+  .cinema-intro p { font-size:.55rem; }
+  .questionnaire { padding:1rem; }
+  .questionnaire .tiles { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+/* I skip the paper and stamp movement when someone prefers less animation. */
+@media(prefers-reduced-motion:reduce) { .cinema-note, .ticket-stamp { animation:none !important; } .enter-programme a,.return-cinema { transition:none; } }
+
+
+/* I keep long film titles inside the screen instead of letting the grid stretch. */
+.cinema-copy { min-width:0; }
+.cinema-title { min-width:0; max-width:100%; font-size:clamp(3rem,7vw,6.5rem); }
+@media(max-width:700px) { .cinema-title { font-size:clamp(2.8rem,12vw,5rem); } }
+
+/* I keep the projector beam visible over the film, with a softer glow near the seats. */
+.cinema-projector {
+  background:linear-gradient(to top,#f5deb824,#f5deb810 65%,transparent);
+  mask-image:linear-gradient(to bottom,transparent,#000 18% 88%,transparent);
+}
+.cinema.is-showing .cinema-projector { opacity:.85; }
+.cinema.curtains-closed .cinema-projector { opacity:0; }
+
+
+/* I underline the film currently showing and keep the numbered controls below the seats. */
+.cinema-caption { display:flex; flex-wrap:wrap; gap:1rem; }
+.cinema-caption > span { flex:1; text-align:center; font-family:var(--font-body); letter-spacing:.17em; }
+.feature-numbers { display:flex; flex-wrap:wrap; gap:.6rem; }
+.feature-numbers button { border:0; border-bottom:1px solid #8d826548; border-radius:0; background:transparent; color:var(--color-muted); padding:.6rem .8rem; min-width:44px; min-height:44px; font:.8rem var(--font-body); }
+.feature-numbers button:hover, .feature-numbers button[aria-pressed="true"] { color:var(--accent); border-bottom-color:var(--accent); }
+@media(max-width:700px) { .cinema-caption > span { flex-basis:60%; text-align:right; font-size:.5rem; } .feature-numbers { width:100%; justify-content:center; gap:.3rem; } }
+
+
+/* I make the changing film name the main detail on the paper ticket. */
+.cinema-ticket { width:clamp(15rem,26vw,21rem); }
+.cinema-ticket strong { font-size:clamp(2rem,3.4vw,3.1rem); line-height:.98; }
+.cinema-screen:not(.has-feature) .cinema-title, .cinema-title { text-wrap:balance; }
+.preview-pause { color:var(--color-muted); border:0; border-bottom:1px solid var(--color-border); background:transparent; padding:.6rem; font:.65rem var(--font-body); min-height:44px; }
+.preview-pause:hover { color:var(--accent); }
+@media(max-width:700px) { .cinema-ticket { width:14rem; } .cinema-ticket strong { font-size:2rem; } }
+
+
+/* I give the opening message room to wrap without overpowering the film ticket. */
+.cinema-screen.is-preview .cinema-title { font-size:clamp(2.6rem,6.3vw,5.6rem); max-width:20ch; }
+/* I adapt the cinema and programme for narrow phones, including touch-sized controls. */
+@media(max-width:700px) {
+  .site-header { gap:1.2rem; padding-block:1.2rem; }
+  .site-header h1 { font-size:clamp(2.1rem,10vw,3.2rem); }
+  .site-header .tagline { font-size:.8rem; }
+  .cinema-screen { padding-top:13rem; min-height:39rem; }
+  .cinema-screen.is-preview .cinema-title { font-size:clamp(2.5rem,10.5vw,4rem); line-height:.98; }
+  .cinema-copy .cinema-eyebrow { font-size:.55rem; }
+  .cinema-meta { overflow-wrap:anywhere; font-size:.6rem; }
+  .cinema-feature-actions { gap:.5rem; }
+  .cinema-feature-actions button { min-height:44px; }
+  .cinema-caption { gap:.7rem; }
+  .cinema-caption > span { flex-basis:45%; }
+  .feature-numbers { gap:.2rem; }
+  .feature-numbers button { padding:.6rem; }
+  .questionnaire select { width:100%; min-width:0; min-height:44px; font-size:1rem; }
+  .questionnaire .chip span { min-height:44px; display:flex; align-items:center; }
+  .questionnaire .summary { flex-wrap:wrap; gap:1rem; }
+  .enter-programme a { text-align:center; line-height:1.5; }
+  .cinema-screen.has-feature .cinema-note { max-height:12rem; font-size:1rem; }
+}
+@media(max-width:380px) {
+  .cinema { --curtain-width:.8rem; }
+  .cinema-screen { padding-inline:.8rem; }
+  .cinema-ticket { right:.7rem; width:12.5rem; }
+  .cinema-ticket strong { font-size:1.8rem; }
+  .cinema-screen.is-preview .cinema-title { font-size:2.5rem; }
+  .cards { gap:.6rem; }
+  .heart-button { width:44px; height:44px; }
+  .feature-numbers { gap:0; }
+}
+
+/* I keep the full film image visible on phones as well as larger screens. */
+.cinema-image-wrap { opacity:1; }
+
+
+/* I make the admission ticket smaller so more of the film stays visible. */
+.cinema-ticket { width:clamp(12rem,20vw,16rem); padding:.9rem; }
+.cinema-ticket strong { font-size:clamp(1.6rem,2.5vw,2.3rem); margin:.65rem 0; }
+.ticket-heading { padding-bottom:.55rem; }
+.ticket-heading, .ticket-footer { font-size:.55rem; }
+@media(max-width:700px) {
+  .cinema-ticket { width:11.5rem; padding:.8rem; }
+  .cinema-ticket strong { font-size:1.65rem; }
+}
+
+
+/* I build a DVD case with a hinged photo cover and a cream paper insert underneath. */
+.dvd-case { position:relative; perspective:1100px; isolation:isolate; }
+.result-card .dvd-case .poster {
+  display:block; z-index:2; transform-origin:left center;
+  backface-visibility:hidden; transition:transform .7s cubic-bezier(.22,.7,.2,1),filter .7s;
+  box-shadow:inset 4px 0 4px #0008,3px 5px 12px #0005;
+}
+.result-card.flipped .dvd-case .poster {
+  display:block; transform:rotateY(-82deg); filter:brightness(.65);
+  pointer-events:none;
+}
+.result-card .dvd-case .card-back {
+  display:flex; position:absolute; inset:0; aspect-ratio:auto; height:100%;
+  padding:1.2rem 1rem 1.2rem 2.4rem; gap:.65rem;
+  background:linear-gradient(90deg,#b8aa8b 0,#d4c7ac 9px,#eee5d1 18px);
+  color:#342d23; border:1px solid #b8aa8b; border-radius:3px;
+  box-shadow:inset 0 0 0 5px #e0d4bb,0 5px 15px #0005;
+  visibility:hidden; opacity:0; pointer-events:none;
+  transition:opacity .2s,visibility 0s .7s;
+  --color-muted:#6c604e; --accent:#765536; --color-border:#b8aa8b;
+}
+.result-card.flipped .dvd-case .card-back {
+  visibility:visible; opacity:1; pointer-events:auto;
+  transition:opacity .35s .15s,visibility 0s;
+}
+.case-insert-label { font:.55rem/1.4 var(--font-body); letter-spacing:.12em; color:#78684f; border-bottom:1px dashed #b8aa8b; padding-bottom:.55rem; }
+.dvd-case .card-back h3 { font-size:1.3rem; padding-right:1.7rem; }
+.dvd-case .card-back p { font-size:.8rem; }
+.dvd-case .card-back .badge { background:transparent; color:#342d23; border:1px solid #b8aa8b; }
+.dvd-case .project-button { background:#342d23; color:#eee5d1; border-radius:0; min-height:44px; flex-shrink:0; }
+.dvd-case .card-back .flip-back { margin-top:.4rem; color:#67563e; border:1px solid #b8aa8b; border-radius:0; min-height:44px; flex-shrink:0; }
+.dvd-case .heart-button { z-index:3; width:44px; height:44px; }
+/* I use a gentler angle and a wider insert on phones so the details stay easy to read. */
+@media(max-width:700px) {
+  .result-card.flipped .dvd-case .poster { transform:rotateY(-86deg); }
+  .result-card .dvd-case .card-back { padding:1rem .8rem 1rem 1.7rem; }
+  .result-card .dvd-case { min-height:23rem; }
+  .result-card .dvd-case .poster { min-height:23rem; }
+  .dvd-case .card-back h3 { font-size:1.1rem; }
+}
+@media(max-width:460px) {
+  .cards { grid-template-columns:minmax(0,1fr); gap:2rem; }
+  .result-card .dvd-case, .result-card .dvd-case .poster { min-height:0; }
+}
+/* I reveal the same insert immediately when less motion is preferred. */
+@media(prefers-reduced-motion:reduce) {
+  .result-card .dvd-case .poster, .result-card .dvd-case .card-back { transition:none; }
+}
+
+
+/* I sweep a soft projector-like light across the DVDs when the shelf shortcut is clicked. */
+.watchlist-list { position:relative; overflow:hidden; }
+.watchlist-list::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:0; background:linear-gradient(105deg,transparent 25%,#efdba433 48%,#fff3 50%,transparent 72%); transform:translateX(-110%); z-index:3; }
+.shelf-arriving .watchlist-list::after { animation:shelf-light-arrival 1.4s .4s ease-in-out both; }
+@keyframes shelf-light-arrival { 0% { opacity:0; transform:translateX(-110%); } 20%,75% { opacity:1; } 100% { opacity:0; transform:translateX(110%); } }
+.watchlist { scroll-margin-block:2rem; }
+@media(prefers-reduced-motion:reduce) { .shelf-arriving .watchlist-list::after { animation:none; } }
+
+
+/* I make the film finder easy to notice before and after the cinema screen. */
+.finder-scroll-cue { display:flex; justify-content:flex-end; align-items:center; gap:.8rem; margin:0 0 1.5rem; color:var(--accent); text-decoration:none; font:.75rem/1.5 var(--font-body); min-height:44px; }
+.finder-scroll-cue span { display:grid; place-items:center; width:34px; height:34px; border:1px solid var(--color-border); border-radius:50%; }
+.enter-programme { padding:2rem 0 3rem; scroll-margin-top:2rem; }
+.enter-programme a { display:flex; align-items:center; justify-content:center; width:min(100%,39rem); min-height:74px; padding:1.15rem 1.8rem; background:var(--accent); color:#211e18; border:1px solid var(--accent); font:600 clamp(1rem,2vw,1.3rem)/1.4 var(--font-body); text-align:center; box-shadow:0 6px 0 #a68c5933; }
+.enter-programme a:hover { background:#e6cf9d; transform:translateY(-2px); }
+.enter-programme a:active { transform:translateY(2px); box-shadow:none; }
+@media(max-width:700px) { .finder-scroll-cue { justify-content:center; font-size:.7rem; } .enter-programme a { min-height:70px; padding:1rem; font-size:1rem; } }
+
+
+/* I lift and gently rock the shelf cases when someone moves the mouse over them. */
+.shelf-case { transform-origin:50% 100%; }
+@media(hover:hover) and (pointer:fine) {
+  .shelf-case:hover { animation:shelf-case-rock 1.8s ease-in-out infinite; }
+}
+@keyframes shelf-case-rock {
+  0%,100% { transform:translateY(-11px) rotate(-4deg); }
+  50% { transform:translateY(-14px) rotate(3deg); }
+}
+/* I keep keyboard selection clear without adding movement for reduced-motion users. */
+.shelf-case:focus-visible { transform:translateY(-10px) rotate(-3deg); }
+@media(prefers-reduced-motion:reduce) { .shelf-case:hover { animation:none; } .shelf-case:focus-visible { transform:none; } }
+
+
+/* I run a soft reflection over the invitation when it is hovered or reached with the keyboard. */
+.enter-programme a { position:relative; overflow:hidden; isolation:isolate; transition:transform .22s,box-shadow .22s,background .22s; }
+.enter-programme a::after { content:''; position:absolute; inset:-40% -20%; pointer-events:none; background:linear-gradient(110deg,transparent 35%,#fff6 49%,transparent 62%); transform:translateX(-120%); }
+.enter-programme a:hover::after, .enter-programme a:focus-visible::after { animation:invitation-shine .8s ease-out both; }
+.enter-programme a:hover { box-shadow:0 8px 0 #a68c5933,0 10px 28px #d6ba8222; }
+.enter-programme a:active { transform:translateY(2px) scale(.98); }
+@keyframes invitation-shine { to { transform:translateX(120%); } }
+/* I keep the invitation still when less motion is preferred. */
+@media(prefers-reduced-motion:reduce) { .enter-programme a { transition:none; } .enter-programme a::after { display:none; } .enter-programme a:hover,.enter-programme a:active { transform:none; } }
+
+
+/* I use only Fraunces for headings and DM Sans for text, labels and buttons. */
+.cinema-title { text-transform:none; line-height:1.05; font-size:clamp(2.5rem,5.5vw,5rem); letter-spacing:-.035em; }
+.cinema-screen.is-preview .cinema-title { font-size:clamp(2.5rem,5vw,4.5rem); max-width:22ch; }
+.cinema-ticket strong { text-transform:none; font-size:clamp(1.3rem,2vw,1.8rem); line-height:1.12; letter-spacing:-.025em; }
+.cinema-meta,.cinema-copy .cinema-eyebrow,.cinema-caption > span,.ticket-heading,.ticket-footer,.case-insert-label { letter-spacing:.08em; }
+@media(max-width:700px) {
+  .cinema-title,.cinema-screen.is-preview .cinema-title { font-size:clamp(2.1rem,8vw,3.2rem); }
+  .cinema-ticket strong { font-size:1.35rem; }
+}
+
+
+/* I light the exit sign on hover and let its arrow point visitors back up. */
+.exit-link { display:inline-flex; align-items:center; gap:.5rem; min-height:44px; transition:box-shadow .3s,border-color .3s,color .3s,background .3s; }
+.exit-link span { display:inline-block; transition:transform .3s; }
+.exit-link:hover, .exit-link:focus-visible { color:#f8e4ad; border-color:#dfc68e; background:#d6ba8212; box-shadow:0 0 10px #d6ba8233,inset 0 0 10px #d6ba8211; text-shadow:0 0 8px #d6ba8277; }
+.exit-link:hover span, .exit-link:focus-visible span { transform:translateY(-4px); }
+.exit-link:active { background:#d6ba8230; }
+@media(prefers-reduced-motion:reduce) { .exit-link,.exit-link span { transition:none; } .exit-link:hover span,.exit-link:focus-visible span { transform:none; } }
+
+
+/* I leave room above the shelf for a case to slide towards the visitor. */
+.watchlist-list { padding-top:2rem; min-height:14rem; }
+
+
+/* I keep every DVD tucked into the shelf at rest, including the last selected film. */
+.shelf-case[aria-pressed="true"] { width:3rem; transform:none; }
+.shelf-case[aria-pressed="true"] img { opacity:.45; }
+.shelf-case[aria-pressed="true"]:has(img:not([hidden])) .shelf-spine { display:block; }
+/* I bring a case forward only while the visitor hovers over it or uses keyboard focus. */
+@media(hover:hover) and (pointer:fine) {
+  .shelf-case:hover, .shelf-case[aria-pressed="true"]:hover { width:7.4rem; }
+  .shelf-case:hover img, .shelf-case[aria-pressed="true"]:hover img { opacity:1; }
+  .shelf-case:hover:has(img:not([hidden])) .shelf-spine { display:none; }
+}
+.shelf-case:focus-visible, .shelf-case[aria-pressed="true"]:focus-visible { width:7.4rem; transform:translateY(-10px) rotate(-3deg); }
+.shelf-case:focus-visible img, .shelf-case[aria-pressed="true"]:focus-visible img { opacity:1; }
+.shelf-case:focus-visible:has(img:not([hidden])) .shelf-spine { display:none; }
+@media(prefers-reduced-motion:reduce) { .shelf-case:focus-visible,.shelf-case[aria-pressed="true"]:focus-visible { transform:none; } }
+
+
+/* I hold the curtains closed while the welcome popcorn falls. */
+.cinema.is-waiting .cinema-curtain { animation:none; transition:none; width:calc(50% + 1px); }
+.popcorn-welcome { position:fixed; inset:0; z-index:1000; pointer-events:none; overflow:hidden; }
+.welcome-kernel { position:absolute; top:0; aspect-ratio:1.1; border-radius:48% 60% 42% 55%; background:radial-gradient(ellipse at 65% 65%,#ba8139 0 10%,transparent 22%),radial-gradient(ellipse at 30% 25%,#fff9dc,#f2d58c 75%); box-shadow:inset -2px -3px 2px #bd8a4644,0 3px 5px #0003; }
+.welcome-kernel::before,.welcome-kernel::after { content:''; position:absolute; width:70%; height:65%; border-radius:50%; background:#fff2c2; z-index:-1; }
+.welcome-kernel::before { left:-20%; top:10%; transform:rotate(-30deg); }
+.welcome-kernel::after { right:-14%; top:-15%; background:#ffedb4; }
+@media(prefers-reduced-motion:reduce) { .popcorn-welcome { display:none; } .cinema.is-waiting .cinema-curtain { width:var(--curtain-width); } }
+
+
+/* I shape each popcorn piece with puffy lobes, warm folds and a small toasted centre. */
+.welcome-kernel {
+  aspect-ratio:1.05;
+  background:
+    radial-gradient(ellipse at 48% 67%,#a76a2f 0 5%,#dcaa57 9%,transparent 20%),
+    radial-gradient(ellipse at 28% 30%,#fffef2 0 22%,transparent 48%),
+    radial-gradient(ellipse at 75% 35%,#fff9dc 0 20%,transparent 45%),
+    radial-gradient(ellipse at 55% 80%,#fff0b9 0 15%,#e7c67a 70%);
+  box-shadow:inset -2px -3px 3px #b9873544,0 3px 5px #0003;
+}
+.welcome-kernel::before {
+  width:74%; height:75%; left:-27%; top:9%; border-radius:58% 43% 60% 38%;
+  background:radial-gradient(ellipse at 35% 30%,#fffef0 20%,#fff3c7 65%,#d9b367);
+  box-shadow:inset -2px -2px 2px #c69c4a33;
+}
+.welcome-kernel::after {
+  width:80%; height:77%; right:-19%; top:-24%; border-radius:48% 65% 45% 60%;
+  background:radial-gradient(ellipse at 40% 30%,#fffef2 20%,#fff1bb 65%,#e0bc6b);
+  box-shadow:inset -2px -2px 2px #c69c4a33;
+}
+.welcome-kernel:nth-child(3n) { aspect-ratio:.85; }
+.welcome-kernel:nth-child(4n)::before { top:30%; left:-20%; }
+.welcome-kernel:nth-child(5n)::after { top:-10%; right:-30%; }
+
+
+/* I use my heading font for the main film invitation. */
+.enter-programme a { font-family:var(--font-title); font-weight:600; }
+
+
+/* I make Find movies the main step after completing the questionnaire. */
+#find-movies-button { background:#765536; color:#fff8e7; border:1px solid #765536; border-radius:0; min-height:48px; padding:.8rem 1.2rem; font:600 1rem var(--font-body); }
+#find-movies-button:hover { background:#584029; }
+.summary-buttons { flex-wrap:wrap; }
+#film-results { scroll-margin-top:2rem; }
+
+
+
+
+/* I use one box shape for the interface, with the same two fonts throughout the website. */
+:root { --radius:2px; --radius-small:2px; }
+button, select, .watchlist-counter, .exit-link, .return-cinema, .enter-programme a,
+.finder-scroll-cue, .convince-toggle, .convince-feature {
+  font-family:var(--font-body);
+  font-style:normal;
+  font-weight:500;
+  letter-spacing:.015em;
+  text-transform:none;
+}
+button, select, .watchlist-counter, .watchlist-counter span, .exit-link, .return-cinema,
+.enter-programme a, .finder-scroll-cue span, .chip span, .tile, .logo, .badge,
+.heart-button, .curtain-toggle, .questionnaire fieldset, .summary,
+.card-back .secondary-button, .dvd-case .card-back .flip-back {
+  border-radius:2px;
+}
+.watchlist-counter, .exit-link, .return-cinema, .curtain-toggle,
+.convince-toggle, .convince-feature, .preview-pause,
+#find-movies-button, #surprise-button, #reset-button,
+.cinema-feature-actions button, .project-button, .secondary-button {
+  font-family:var(--font-body);
+  font-weight:500;
+  font-size:.9rem;
+  line-height:1.4;
+  letter-spacing:.015em;
+  min-height:44px;
+}
+.watchlist-counter { display:inline-flex; align-items:center; gap:.7rem; padding:.65rem 1rem; border:1px solid var(--color-border); }
+.watchlist-counter span { display:inline-grid; place-items:center; min-width:1.7rem; min-height:1.7rem; padding:.1rem .35rem; font:500 .85rem/1 var(--font-body); }
+.exit-link { padding:.65rem 1rem; }
+.curtain-toggle { border:1px solid var(--color-border); padding:.65rem 1rem; }
+.enter-programme a { font-family:var(--font-body); font-size:1.1rem; font-weight:500; }
+.questionnaire .chip span, .questionnaire select { font-family:var(--font-body); font-weight:500; }
+/* I keep the serif for headings and use the same clear body type for personal notes and small labels. */
+h1,h2,h3,legend,.cinema-title,.cinema-ticket strong { font-family:var(--font-title); font-weight:600; font-style:normal; }
+.site-header h1 em,.cinema-intro h2 { font-style:normal; }
+.cinema-note,.cinema-screen.has-feature .cinema-note,.convince-comment { font-family:var(--font-body); font-style:normal; }
+.cinema-eyebrow,.cinema-meta,.cinema-caption > span,.ticket-heading,.ticket-footer,
+.brand-eyebrow,.case-insert-label { font-family:var(--font-body); letter-spacing:.06em; }
+@media(max-width:700px) { .enter-programme a { font-size:1rem; } }
+
+
+/* I use dark ink on the cream notes so both the label and recommendation are readable. */
+.convince-comment { --color-text:#342d23; --accent:#6b5032; color:#342d23; }
+.convince-comment p { color:#342d23; font-family:var(--font-body); font-style:normal; }
+.convince-comment .convince-label { color:#6b5032; }
+
+
+/* I mark watched films with a small ink stamp while keeping the real poster visible. */
+.seen-stamp { position:absolute; top:36%; left:50%; z-index:3; display:block; width:max-content; max-width:90%; padding:.5rem .8rem; border:3px double #813e32; background:#eee5d1ed; color:#813e32; font:700 clamp(1rem,2vw,1.5rem)/1.2 var(--font-body); letter-spacing:.1em; transform:translateX(-50%) rotate(-12deg); box-shadow:0 2px 5px #0003; pointer-events:none; animation:seen-ink .3s ease-out; }
+.seen-button { width:100%; padding:.65rem .3rem; margin-top:.5rem; border:0; border-bottom:1px solid var(--color-border); border-radius:2px; background:transparent; color:var(--color-muted); font:500 .85rem/1.4 var(--font-body); min-height:44px; text-align:left; }
+.seen-button:hover,.seen-button[aria-pressed="true"] { color:var(--accent); }
+@keyframes seen-ink { from { opacity:0; transform:translateX(-50%) scale(1.3) rotate(-18deg); } to { opacity:1; transform:translateX(-50%) scale(1) rotate(-12deg); } }
+@media(prefers-reduced-motion:reduce) { .seen-stamp { animation:none; } }
+
+
+/* I keep a clear four-part menu visible so visitors always know where they are. */
+.main-menu { width:min(94%,80rem); margin:0 auto 2rem; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); background:#211c16; border:1px solid var(--color-border); position:sticky; top:0; z-index:20; }
+.main-menu a { display:flex; align-items:center; gap:.7rem; padding:1rem; min-height:60px; color:var(--color-muted); text-decoration:none; font:500 .9rem/1.4 var(--font-body); border-right:1px solid var(--color-border); }
+.main-menu a:last-child { border-right:0; }
+.main-menu a span { font-size:.7rem; opacity:.75; }
+.main-menu a:hover { background:#d6ba8212; color:var(--color-text); }
+.main-menu a[aria-current="page"] { background:var(--accent); color:#211c16; }
+#cinema-view,#programme-view,#saved-view,#watched-view { scroll-margin-top:6rem; }
+#saved-view .watchlist { margin-top:0; }
+#watched-view h2 { font-size:clamp(2rem,4vw,3rem); margin:.5rem 0; }
+.watched-empty { grid-column:1/-1; padding:2rem 0; }
+@media(max-width:600px) { .main-menu { grid-template-columns:repeat(2,minmax(0,1fr)); } .main-menu a { min-height:52px; padding:.8rem; font-size:.8rem; } .main-menu a:nth-child(2) { border-right:0; } .main-menu a:nth-child(-n+2) { border-bottom:1px solid var(--color-border); } }
+
+
+/* I pair a real poster with the watched control, keeping the same box shapes and fonts. */
+.watched-picker { display:grid; gap:.5rem; max-width:30rem; color:var(--color-muted); font-size:.85rem; margin:1.5rem 0; }
+.watched-picker select { max-width:100%; font-size:1rem; min-height:44px; }
+.watched-spotlight { display:grid; grid-template-columns:minmax(10rem,15rem) minmax(0,1fr); align-items:center; gap:2rem; margin:2rem 0 3rem; }
+.watched-portrait { position:relative; aspect-ratio:2/3; background:#29231b; border:1px solid var(--color-border); display:grid; place-items:center; overflow:hidden; }
+.watched-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+#watched-photo-fallback { padding:1rem; font:600 1.4rem var(--font-title); text-align:center; }
+.watched-description h3 { font-size:clamp(1.6rem,3vw,2.4rem); margin:0 0 1rem; }
+.watched-description p { color:var(--color-muted); }
+#watched-mark-button { background:transparent; color:var(--accent); border:1px solid var(--color-border); padding:.8rem 1.2rem; border-radius:2px; min-height:44px; font:500 .95rem var(--font-body); }
+#watched-mark-button:hover,#watched-mark-button[aria-pressed="true"] { border-color:var(--accent); background:#d6ba8212; }
+.watched-list-heading { border-top:1px solid var(--color-border); padding-top:1.5rem; font-size:1.6rem; }
+@media(max-width:550px) { .watched-spotlight { grid-template-columns:1fr; gap:1rem; } .watched-portrait { width:min(65%,15rem); } }
+
+
+/* I put the main navigation at the top, above the title and introduction. */
+.main-menu { margin-top:0; margin-bottom:0; border-top:0; }
+.site-header { margin-top:0; }
+
+
+/* I hide the recommendation note for films the visitor has already watched. */
+.result-card.is-watched .convince-card { display:none; }
+
+
+/* I make finding a watched film a short search rather than a long dropdown. */
+.watched-search-area { max-width:42rem; margin:1.5rem 0 2rem; }
+.watched-search-area .watched-picker { max-width:none; margin:0 0 .6rem; font-size:.9rem; }
+#watched-film-search { width:100%; min-height:54px; padding:.9rem 1rem; border:1px solid var(--color-border); border-radius:2px; background:#252018; color:var(--color-text); font:400 1rem/1.4 var(--font-body); }
+#watched-film-search::placeholder { color:var(--color-muted); opacity:1; }
+#watched-search-count { font-size:.8rem; color:var(--color-muted); }
+#watched-search-results { border:1px solid var(--color-border); background:#252018; }
+.watched-search-match { display:block; width:100%; min-height:48px; padding:.8rem 1rem; text-align:left; border:0; border-bottom:1px solid var(--color-border); border-radius:0; background:transparent; color:var(--color-text); font:400 .9rem/1.4 var(--font-body); }
+.watched-search-match:last-child { border-bottom:0; }
+.watched-search-match:hover,.watched-search-match:focus-visible { background:#d6ba821a; color:var(--accent); }
+
+
+/* I show a clear title-by-title editor so visitors know exactly what they are removing. */
+#shelf-manager { margin-top:1rem; border:1px solid var(--color-border); padding:0 1rem; }
+.shelf-manage-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.8rem 0; border-bottom:1px solid var(--color-border); }
+.shelf-manage-row:last-child { border-bottom:0; }
+.shelf-manage-row span { overflow-wrap:anywhere; }
+.shelf-manage-row button { flex-shrink:0; min-height:44px; padding:.5rem .9rem; border:1px solid var(--color-border); border-radius:2px; background:transparent; color:var(--accent); font:500 .85rem var(--font-body); }
+.shelf-manage-row button:hover { background:#d6ba821a; border-color:var(--accent); }
+
+
+/* I keep both ways of choosing a watched film equally clear and easy to use. */
+.watched-browse { padding-top:1rem; }
+#watched-film-list { width:100%; max-width:none; min-height:48px; padding:.8rem 1rem; color:var(--color-text); background:#252018; border:1px solid var(--color-border); border-radius:2px; font:400 1rem var(--font-body); }
+
+
+/* I make streaming links look like the rest of my box-shaped controls. */
+a.platform-watch-link { display:inline-flex; align-items:center; min-height:44px; padding:.45rem .7rem; border:1px solid var(--color-border); border-radius:2px; background:transparent; color:inherit; text-decoration:none; font:500 .75rem/1.4 var(--font-body); }
+a.platform-watch-link:hover { text-decoration:underline; text-underline-offset:3px; }
+.dvd-case .card-back .platform-link-hint { color:#65543e; font:400 .7rem/1.45 var(--font-body); }
+.cinema-platforms a.platform-watch-link { color:#f3e8d2; border-color:#eee5d177; background:#11120f55; }
+
+
+/* I give the recommendation explanation its own clear, expandable paper insert. */
+.why-match { margin-top:.7rem; border:1px solid var(--color-border); border-radius:2px; background:transparent; }
+.why-match summary { padding:.75rem .8rem; min-height:44px; color:var(--accent); font:500 .85rem/1.4 var(--font-body); }
+.why-match[open] { background:#eee5d1; border-color:#b8aa8b; }
+.why-match[open] summary { color:#493822; border-bottom:1px solid #c9b99b; }
+.why-match ul { margin:0; padding:1rem 1rem 1rem 1.8rem; color:#342d23; font:400 .8rem/1.6 var(--font-body); }
+.why-match li + li { margin-top:.4rem; }
+
+
+/* I give the mystery screening its own game section rather than another random recommendation button. */
+.main-menu { grid-template-columns:repeat(5,minmax(0,1fr)); }
+.main-menu a { padding:.85rem; font-size:.85rem; }
+#mystery-view { max-width:52rem; margin:auto; }
+#mystery-view h2 { font-size:clamp(2rem,4vw,3rem); margin:.5rem 0; }
+.mystery-stage { height:330px; position:relative; overflow:hidden; isolation:isolate; display:grid; place-items:center; margin:1.5rem 0; background:radial-gradient(ellipse,#4b402b,#101310 75%); border:1px solid var(--color-border); }
+.mystery-stage::after { content:''; position:absolute; inset:0; background:linear-gradient(110deg,transparent,#f1dca422,transparent); pointer-events:none; opacity:0; transition:opacity 1s; }
+.mystery-stage.is-revealed::after { opacity:1; }
+.mystery-question { position:relative; z-index:3; color:var(--color-text); font:600 5rem var(--font-title); text-shadow:0 3px 20px #0008; }
+#mystery-poster { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#11120f; }
+.mystery-curtain { position:absolute; inset-block:0; width:50.2%; background:repeating-linear-gradient(90deg,#361419,#76312d 13px,#4a1b20 24px,#2d1318 30px); z-index:2; transition:width 1s cubic-bezier(.65,0,.25,1); box-shadow:0 0 20px #0008; }
+.mystery-left { left:0; } .mystery-right { right:0; }
+.mystery-stage.is-revealed .mystery-curtain { width:7%; }
+.mystery-clues { padding:0; margin:1.5rem 0; list-style:none; display:grid; gap:.6rem; }
+.mystery-clues li { padding:.9rem 1rem; border:1px solid var(--color-border); display:flex; align-items:center; gap:1rem; color:var(--color-muted); transform-origin:50% 0; }
+.mystery-clues li>span:first-child { font-family:var(--font-title); color:var(--accent); }
+.mystery-clues li.is-uncovered { background:#eee5d1; color:#342d23; border-color:#b8aa8b; }
+.mystery-clues li.is-uncovered>span:first-child { color:#765536; }
+.mystery-actions { display:flex; flex-wrap:wrap; gap:.75rem; margin:1rem 0; }
+#mystery-view button { min-height:46px; padding:.75rem 1rem; border:1px solid var(--color-border); background:transparent; color:var(--accent); border-radius:2px; font:500 .9rem/1.4 var(--font-body); }
+#mystery-view button:hover { background:#d6ba821a; }
+#mystery-view button:disabled { opacity:.5; }
+#mystery-reveal-button,#mystery-project { background:var(--accent)!important; color:#241e16!important; }
+#mystery-guess-form label { display:block; color:var(--color-muted); margin-bottom:.5rem; }
+.mystery-guess-row { display:flex; gap:.75rem; }
+#mystery-guess { width:100%; min-width:0; flex:1; background:#252018; border:1px solid var(--color-border); border-radius:2px; color:var(--color-text); min-height:48px; padding:.8rem; font:400 1rem var(--font-body); }
+#mystery-feedback { min-height:1.5rem; color:var(--accent); }
+#mystery-title { font-size:clamp(1.7rem,3vw,2.5rem); margin:.5rem 0; }
+.mystery-celebration { position:absolute; inset:0; z-index:4; overflow:hidden; pointer-events:none; }
+.mystery-celebration span { position:absolute; top:0; width:9px; height:17px; background:#ddc48f; }
+@media(max-width:700px) { .main-menu { grid-template-columns:repeat(2,minmax(0,1fr)); } .main-menu a { font-size:.8rem; border-bottom:1px solid var(--color-border); } .main-menu a:last-child { grid-column:1/-1; justify-content:center; border-bottom:0; } .mystery-stage { height:280px; } .mystery-guess-row { flex-direction:column; } .mystery-actions button { flex:1; } }
+@media(prefers-reduced-motion:reduce) { .mystery-curtain,.mystery-stage::after { transition:none; } }
+
+
+/* I give visitors a clear next step when their preferences have no exact match. */
+#no-match-options { margin:1rem 0 2rem; padding:1.2rem; border:1px solid var(--color-border); background:#252018; }
+.no-match-actions { display:flex; flex-wrap:wrap; gap:.75rem; }
+.no-match-actions button { min-height:48px; padding:.8rem 1rem; border:1px solid var(--color-border); border-radius:2px; color:var(--accent); background:transparent; font:500 .9rem/1.4 var(--font-body); }
+.no-match-actions button:hover:not(:disabled) { border-color:var(--accent); background:#d6ba821a; }
+.no-match-actions button:disabled { opacity:.5; }
+#no-match-help { color:var(--color-muted); font-size:.85rem; margin:.9rem 0 0; }
+@media(max-width:600px) { .no-match-actions { flex-direction:column; } }
+
+
+/* I give phone photos their own wide screen so the full image stays visible above the controls. */
+@media (max-width:700px) {
+  .cinema-screen, .cinema-screen:not(.has-feature) {
+    display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
+    min-height:0; padding:0 0 6rem; gap:1rem;
+  }
+  .cinema-image-wrap {
+    position:relative; inset:auto; order:-2; align-self:stretch;
+    width:100%; height:auto; aspect-ratio:16/9; z-index:0; flex-shrink:0;
+    background:#11120f; transform:none;
+  }
+  .cinema-image-wrap img { object-fit:contain; object-position:center; }
+  .cinema-glow { display:none; }
+  .cinema-ticket { position:relative; inset:auto; order:-1; align-self:flex-end; margin:0 1rem; transform:none; }
+  .cinema-copy { width:100%; padding:0 1rem; box-sizing:border-box; }
+  .cinema-screen .cinema-note, .cinema-screen.has-feature .cinema-note {
+    position:relative; inset:auto; width:auto; max-width:none; max-height:none;
+    margin:0 1rem; padding:1rem; transform:none;
+  }
+  .watched-portrait img { object-fit:contain; }
+}
+
+
+/* I carry the projector's warm light into every section without covering the controls. */
+#cinema-view, #programme-view, #saved-view, #watched-view, #mystery-view { position:relative; }
+.scene-arriving::before {
+  content:''; position:absolute; inset:0 0 auto; height:min(28rem,70vh);
+  pointer-events:none; z-index:4; opacity:0;
+  background:linear-gradient(110deg,transparent 38%,#e8ce9417 48%,#f6dfad25 50%,transparent 62%);
+  background-size:260% 100%; background-repeat:no-repeat;
+  animation:scene-spotlight 1.25s ease-out both;
+}
+@keyframes scene-spotlight {
+  0% { background-position:100% 0; opacity:0; }
+  20% { opacity:1; }
+  75% { opacity:.8; }
+  100% { background-position:0% 0; opacity:0; }
+}
+
+/* I give the menu a moving gold underline and a small press on touch screens. */
+.main-menu a { position:relative; transition:background-color .25s,color .25s; }
+.main-menu a::after {
+  content:''; position:absolute; inset:auto 15% 7px; height:2px;
+  background:currentColor; transform:scaleX(0); transform-origin:left;
+  transition:transform .3s ease; opacity:.65; pointer-events:none;
+}
+.main-menu a[aria-current="page"]::after { transform:scaleX(1); }
+button, .platform-watch-link, .return-cinema, .watchlist-counter, .enter-programme a {
+  transition:background-color .2s,border-color .2s,color .2s,box-shadow .2s,translate .2s;
+}
+button:not(:disabled):active, a.platform-watch-link:active, .main-menu a:active { translate:0 2px; }
+
+/* I light up each chosen answer with a quick gold glimmer. */
+.questionnaire .chip input:checked + span, .questionnaire .tile input:checked + span {
+  animation:answer-glimmer .45s ease-out;
+}
+@keyframes answer-glimmer {
+  0% { box-shadow:0 0 0 0 #d6ba8277; }
+  100% { box-shadow:0 0 0 9px #d6ba8200; }
+}
+@media (hover:hover) and (pointer:fine) {
+  button:not(:disabled):hover, a.platform-watch-link:hover, .return-cinema:hover, .watchlist-counter:hover {
+    translate:0 -2px; box-shadow:0 6px 18px #0002;
+  }
+  .main-menu a:hover::after { transform:scaleX(1); }
+}
+/* I keep the same layout with calmer effects when visitors request less motion. */
+@media (prefers-reduced-motion:reduce) {
+  .scene-arriving::before { animation:none; }
+  .main-menu a, .main-menu a::after, button, .platform-watch-link, .return-cinema, .watchlist-counter, .enter-programme a { transition:none; }
+  .questionnaire .chip input:checked + span, .questionnaire .tile input:checked + span { animation:none; }
+  button:not(:disabled):hover, button:not(:disabled):active, a.platform-watch-link:hover, a.platform-watch-link:active, .main-menu a:active, .return-cinema:hover, .watchlist-counter:hover { translate:none; }
+}
+
+
+/* I draw the same thin arrows on phones and laptops, independently of emoji fonts. */
+.arrow-icon { display:inline-block; width:1em; height:1em; vertical-align:-.12em; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.platform-arrow { display:inline-flex; margin-left:.35em; }
+
+/* I fit all six destinations into one desktop row and three equal phone rows. */
+.main-menu { grid-template-columns:repeat(6,minmax(0,1fr)); }
+#secret-seats-view { position:relative; max-width:54rem; margin-inline:auto; }
+#secret-seats-view h2 { font-size:clamp(2rem,4vw,3rem); line-height:1.15; margin:.5rem 0 1rem; }
+#secret-seats-view > .hint { max-width:48rem; }
+.secret-cinema { position:relative; height:300px; margin:2rem 0 1.5rem; isolation:isolate; }
+.secret-screen { position:relative; margin:auto; display:grid; place-items:center; width:76%; height:90px; padding:1rem; border:6px solid #41352a; background:#eee5d1; color:#55442e; text-align:center; font:500 .75rem/1.4 var(--font-body); letter-spacing:.15em; box-shadow:0 10px 55px #d6ba8233; }
+.secret-beam { position:absolute; inset:90px 3% 0; clip-path:polygon(10% 0,90% 0,100% 100%,0 100%); background:linear-gradient(#d6ba8219,transparent); pointer-events:none; transition:opacity .6s; }
+.secret-cinema.has-secret .secret-beam { opacity:.45; }
+.secret-seat-row { display:flex; gap:clamp(6px,2vw,18px); justify-content:center; align-items:flex-end; position:absolute; bottom:74px; width:100%; }
+.secret-seat-row button,.secret-empty-seat { position:relative; display:block; width:70px; height:80px; min-width:0; flex:0 1 70px; border:1px solid #643b3a; border-radius:20px 20px 3px 3px; background:linear-gradient(100deg,#331c22,#633139); box-shadow:0 8px 0 #2c1b1b; }
+.secret-seat-row button { min-width:44px; padding:0; min-height:60px; color:#f0d99f; font:500 .85rem var(--font-body); transition:transform .3s,box-shadow .3s,border-color .3s; }
+.secret-seat-row button[aria-pressed="true"] { transform:translateY(-6px); border-color:var(--accent); box-shadow:0 8px 0 #2c1b1b,0 0 28px #d6ba8244; }
+.secret-spark { position:absolute; top:-25px; left:0; right:0; color:var(--accent); }
+.secret-back-row { position:absolute; bottom:8px; width:100%; display:flex; gap:clamp(6px,2vw,18px); justify-content:center; pointer-events:none; }
+.secret-back-row span { width:82px; height:58px; border-radius:22px 22px 3px 3px; background:linear-gradient(100deg,#28171c,#49242b); border:1px solid #542e32; }
+.secret-story { padding:1.5rem 0; border-top:1px solid var(--color-border); }
+.secret-story h3 { font-size:clamp(1.7rem,3vw,2.5rem); line-height:1.2; margin:.6rem 0 1rem; }
+.secret-story > p:last-child { max-width:65ch; color:var(--color-muted); }
+.secret-film-details { display:grid; grid-template-columns:8rem minmax(0,1fr); gap:1.5rem; padding:1.5rem 0; border-top:1px solid var(--color-border); align-items:center; }
+.secret-portrait { position:relative; width:100%; aspect-ratio:2/3; background:#29231b; display:grid; place-items:center; overflow:hidden; }
+.secret-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#17120e; }
+#secret-photo-fallback { padding:.5rem; text-align:center; font-family:var(--font-title); font-size:1rem; }
+#secret-project { min-height:46px; padding:.8rem 1rem; border:1px solid var(--accent); color:#241e16; background:var(--accent); border-radius:2px; font:500 .9rem var(--font-body); }
+#secret-platforms { margin-bottom:0; }
+@media(max-width:1000px) and (min-width:701px) { .main-menu a { padding:.8rem .5rem; gap:.4rem; font-size:.75rem; } }
+@media(max-width:700px) {
+  .main-menu { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .main-menu a:last-child { grid-column:auto; justify-content:flex-start; }
+  .main-menu a:nth-child(even) { border-right:0; }
+  .main-menu a:nth-child(5) { border-right:1px solid var(--color-border); }
+  .main-menu a:nth-last-child(-n+2) { border-bottom:0; }
+  .secret-cinema { height:260px; }
+  .secret-screen { width:92%; height:80px; font-size:.65rem; }
+  .secret-beam { top:80px; }
+  .secret-seat-row { bottom:65px; }
+  .secret-seat-row button,.secret-empty-seat { height:65px; border-radius:15px 15px 3px 3px; }
+  .secret-back-row span { height:46px; }
+  .secret-film-details { grid-template-columns:5.5rem minmax(0,1fr); gap:1rem; }
+}
+@media(prefers-reduced-motion:reduce) { .secret-seat-row button,.secret-beam { transition:none; } }
+
+
+/* I show smaller, upright, uncropped posters in the phone cinema only. */
+@media(max-width:700px) {
+  .cinema-image-wrap {
+    align-self:center; width:min(72%,15rem); height:auto; aspect-ratio:2/3;
+    margin:1rem auto .5rem; transform:none;
+  }
+  .cinema-image-wrap img { object-fit:contain; object-position:center; transform:none; }
+}
+
+
+/* I open with a quiet black title screen and a notched admission ticket. */
+body.entrance-pending { overflow:hidden; }
+.cinema-entrance {
+  position:fixed; inset:0; z-index:1100; background:#000; color:#f7f4ed;
+  display:grid; grid-template-rows:1fr auto 1fr; justify-items:center;
+  padding:max(2rem,env(safe-area-inset-top)) 1.5rem max(2rem,env(safe-area-inset-bottom));
+  min-height:100svh; isolation:isolate;
+}
+.cinema-entrance[hidden] { display:none; }
+.entrance-wordmark { grid-row:2; text-align:center; max-width:100%; padding-bottom:3rem; }
+.entrance-wordmark h1 {
+  color:inherit; font:600 clamp(3.2rem,10vw,8rem)/.95 var(--font-title);
+  letter-spacing:-.065em; text-transform:uppercase; margin:0 0 1.1rem;
+}
+.entrance-wordmark p { margin:0; font:500 clamp(.65rem,1.4vw,.95rem)/1.6 var(--font-body); text-transform:uppercase; letter-spacing:.38em; }
+button.entrance-ticket {
+  grid-row:3; align-self:end; margin-bottom:clamp(1rem,6vh,5rem); display:flex; align-items:stretch;
+  min-height:64px; padding:0; width:230px; max-width:100%; border:0; border-radius:0;
+  background:#f7f4ed; color:#090909; font:700 .95rem/1 var(--font-body); letter-spacing:.12em;
+  box-shadow:none;
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,calc(100% - 5px) 5px,100% 7px,100% calc(100% - 7px),calc(100% - 5px) calc(100% - 5px),calc(100% - 7px) 100%,7px 100%,5px calc(100% - 5px),0 calc(100% - 7px),0 7px,5px 5px);
+}
+.entrance-ticket > span:first-child { display:grid; place-items:center; flex:1; padding:1rem; }
+.entrance-ticket-stub { display:grid; place-items:center; width:70px; border-left:2px dashed #141414; }
+.entrance-ticket .arrow-icon { width:1.6rem; height:1.6rem; transition:transform .2s; }
+button.entrance-ticket:hover { background:#fff; box-shadow:none; translate:none; }
+.entrance-ticket:hover .arrow-icon { transform:translateX(3px); }
+button.entrance-ticket:focus-visible { outline:3px solid var(--accent); outline-offset:7px; clip-path:none; }
+@media(max-width:480px) { .entrance-wordmark h1 { font-size:clamp(2.5rem,12vw,4.5rem); } .entrance-wordmark p { font-size:.6rem; letter-spacing:.24em; } }
+@media(prefers-reduced-motion:reduce) { .entrance-ticket .arrow-icon { transition:none; } .entrance-ticket:hover .arrow-icon { transform:none; } }
+
+/* I use the website's own warm background and bring up the light like a small projector. */
+.cinema-entrance {
+  background-color:var(--color-background);
+  background-image:radial-gradient(ellipse at 50% 0,#51402b30,transparent 55rem);
+  color:var(--color-text); overflow:hidden;
+}
+.cinema-entrance::before {
+  content:''; position:absolute; inset:-30% -40%; z-index:-1; pointer-events:none;
+  background:conic-gradient(from 135deg at 50% 0%,transparent 0deg,#d6ba8214 22deg,#f3d79e0d 45deg,transparent 85deg);
+  transform-origin:50% 0; opacity:0;
+  animation:entrance-projector 4.8s ease-out .1s both;
+}
+.entrance-dust { position:absolute; inset:0; z-index:-1; pointer-events:none; }
+.entrance-dust span {
+  position:absolute; left:var(--dust-x); top:var(--dust-y); width:var(--dust-size,3px); height:var(--dust-size,3px);
+  background:var(--accent); border-radius:50%; opacity:0;
+  box-shadow:0 0 9px #d6ba8244;
+  animation:entrance-dust-drift 5.6s ease-out var(--dust-delay,0s) both;
+}
+.entrance-wordmark h1 { animation:entrance-title-develop 1.35s cubic-bezier(.2,.7,.2,1) .15s both; }
+.entrance-wordmark p { color:var(--color-muted); animation:entrance-subtitle-develop 1s ease-out .6s both; }
+button.entrance-ticket {
+  position:relative; background:#eee5d1; color:#302b22;
+  animation:entrance-ticket-arrive .9s cubic-bezier(.2,.8,.3,1) 1s both;
+}
+button.entrance-ticket::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(110deg,transparent 30%,#ffffff80 48%,transparent 66%);
+  transform:translateX(-130%); animation:entrance-ticket-gleam .95s ease-out 2s both;
+}
+button.entrance-ticket:hover { background:#f5e9d8; }
+button.entrance-ticket:disabled .entrance-ticket-stub { animation:entrance-stub-tear .35s ease-in both; }
+@keyframes entrance-projector {
+  0% { opacity:0; transform:rotate(-16deg); }
+  30% { opacity:1; }
+  70% { opacity:.6; }
+  100% { opacity:0; transform:rotate(12deg); }
+}
+@keyframes entrance-title-develop {
+  0% { opacity:0; transform:translateY(22px) scale(.97); filter:blur(9px); }
+  70% { opacity:1; filter:blur(0); }
+  100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+}
+@keyframes entrance-subtitle-develop { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes entrance-ticket-arrive { from { opacity:0; transform:translateY(18px) rotate(-4deg); } to { opacity:1; transform:translateY(0) rotate(0); } }
+@keyframes entrance-ticket-gleam { to { transform:translateX(130%); } }
+@keyframes entrance-dust-drift {
+  0% { opacity:0; transform:translate3d(-12px,25px,0); }
+  20% { opacity:.38; }
+  75% { opacity:.18; }
+  100% { opacity:0; transform:translate3d(28px,-65px,0); }
+}
+@keyframes entrance-stub-tear { to { opacity:0; transform:translate(22px,15px) rotate(12deg); } }
+@media(max-width:700px) { .entrance-dust span:nth-child(even) { display:none; } }
+@media(prefers-reduced-motion:reduce) {
+  .cinema-entrance::before,.entrance-dust { display:none; }
+  .entrance-wordmark h1,.entrance-wordmark p,button.entrance-ticket,button.entrance-ticket::after,button.entrance-ticket:disabled .entrance-ticket-stub { animation:none; }
+  button.entrance-ticket::after { display:none; }
+}

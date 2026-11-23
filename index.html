@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>A Certain Kind of Cinema | Valentina’s favourites. Your next movie night.</title>
+    <meta name="description" content="A personal collection of Valentina’s favourite films. Choose your platforms and your mood, and find your next movie night.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,600&family=DM+Sans:wght@400;500;700&display=swap">
+    <!-- I keep all my page and cinema styles together in styles.css. -->
+    <link rel="stylesheet" href="styles.css?v=20261123-atmosphere">
+    <!-- I use defer so the page elements exist before the scripts run, in this order. -->
+    <script src="script.js?v=20261123-entrance" defer></script>
+  </head>
+  <!-- I keep one warm cinema palette; the mood choices only change the recommendations. -->
+  <body id="top" class="entrance-pending">
+    <!-- I invite visitors in before starting the popcorn welcome. -->
+    <section id="cinema-entrance" class="cinema-entrance" role="dialog" aria-modal="true" aria-labelledby="entrance-name" aria-describedby="entrance-subtitle">
+      <div class="entrance-dust" aria-hidden="true"><span style="--dust-x:12%;--dust-y:29%;--dust-size:2px;--dust-delay:0.0s"></span><span style="--dust-x:23%;--dust-y:65%;--dust-size:3px;--dust-delay:0.2s"></span><span style="--dust-x:35%;--dust-y:19%;--dust-size:4px;--dust-delay:0.4s"></span><span style="--dust-x:46%;--dust-y:76%;--dust-size:2px;--dust-delay:0.6000000000000001s"></span><span style="--dust-x:57%;--dust-y:25%;--dust-size:3px;--dust-delay:0.8s"></span><span style="--dust-x:68%;--dust-y:58%;--dust-size:4px;--dust-delay:0.0s"></span><span style="--dust-x:79%;--dust-y:34%;--dust-size:2px;--dust-delay:0.2s"></span><span style="--dust-x:87%;--dust-y:73%;--dust-size:3px;--dust-delay:0.4s"></span><span style="--dust-x:17%;--dust-y:84%;--dust-size:4px;--dust-delay:0.6000000000000001s"></span><span style="--dust-x:38%;--dust-y:53%;--dust-size:2px;--dust-delay:0.8s"></span><span style="--dust-x:62%;--dust-y:84%;--dust-size:3px;--dust-delay:0.0s"></span><span style="--dust-x:92%;--dust-y:16%;--dust-size:4px;--dust-delay:0.2s"></span></div>
+      <div class="entrance-wordmark"><h1 id="entrance-name">Valentina’s</h1><p id="entrance-subtitle">Personal film collection</p></div>
+      <button type="button" id="enter-cinema" class="entrance-ticket"><span>ENTER</span><span class="entrance-ticket-stub" aria-hidden="true"><svg class="arrow-icon" viewBox="0 0 24 24" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></span></button>
+    </section>
+    <div id="film-website" inert aria-hidden="true">
+    <!-- I hide this decorative film strip from screen readers. -->
+    <div class="film-strip" aria-hidden="true"></div>
+
+    <!-- I divide the website into four clear sections that visitors can open directly. -->
+    <nav class="main-menu" aria-label="Main navigation">
+      <a href="#cinema" data-view="cinema"><span>01</span> The cinema</a>
+      <a href="#find-a-film" data-view="programme"><span>02</span> Find your film</a>
+      <a href="#watchlist" data-view="saved"><span>03</span> Your shelf</a>
+      <a href="#watched" data-view="watched"><span>04</span> Watched films</a>
+      <a href="#mystery" data-view="mystery"><span>05</span> Mystery screening</a>
+      <a href="#secret-seats" data-view="secrets"><span>06</span> A seat with a secret</a>
+    </nav>
+
+    <!-- I introduce my film collection and show how many films have been saved. -->
+    <header class="site-header">
+      <div>
+        <p class="brand-eyebrow">A personal film collection</p>
+        <h1>A Certain Kind<br><em>of Cinema</em></h1>
+        <p class="tagline">Not sure what to watch? Explore Valentina’s favourite films and find one that fits your streaming platforms and mood.</p>
+      </div>
+      <a href="#watchlist" class="watchlist-counter">Your shelf <span id="watchlist-count">0</span></a>
+    </header>
+
+    <!-- I keep the cinema, questionnaire, recommendations and saved films in the main content. -->
+
+    <main>
+      <section id="cinema-view" aria-label="The cinema">
+      <!-- I introduce the featured film area before the questionnaire. -->
+      <div class="cinema-intro"><h2>A glimpse of Valentina’s favourites</h2><p>A personal collection. An open invitation.</p></div>
+      <!-- I use two curtain panels around the screen. Their first opening is a CSS animation. -->
+      <section class="cinema is-entering is-waiting" aria-label="Tonight’s featured movie">
+        <!-- I keep the top of the cinema decorative without a heading. -->
+        <div class="cinema-marquee" aria-hidden="true"></div>
+        <div class="cinema-curtain cinema-curtain-left" aria-hidden="true"></div><div class="cinema-curtain cinema-curtain-right" aria-hidden="true"></div>
+      <!-- I let JavaScript update the film title, poster, platforms and personal note in this screen. -->
+        <div class="cinema-screen" id="cinema-screen"><div class="cinema-glow" aria-hidden="true"></div>
+          <div class="cinema-copy" aria-live="polite"><p class="cinema-eyebrow" id="cinema-label" hidden>Your seat is waiting</p><h3 class="cinema-title" id="cinema-title">Valentina’s favourites.<br>Your next movie night.</h3><div class="cinema-meta" id="cinema-meta">Set the scene below</div><div class="cinema-platforms" id="cinema-platforms"></div><div class="cinema-feature-actions"><!-- I offer a return to automatic movies after a deliberate film selection. --><button type="button" id="continue-previews" hidden>Back to previews <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></svg></button><button type="button" class="convince-feature hidden" id="convince-feature" aria-expanded="false" aria-controls="cinema-note">Convince me</button><button type="button" class="cinema-save hidden" id="cinema-save">Save for another night</button></div></div>
+          <!-- I make each featured film feel like an admission ticket from my own cinema. -->
+          <aside class="cinema-ticket" aria-label="Your cinema ticket"><div class="ticket-heading"><span>ADMIT ONE</span><span id="ticket-number">001</span></div><strong id="ticket-title">A night at the movies</strong><div class="ticket-footer"><span>YOUR SOFA</span><span>SCREEN 01</span></div><span class="ticket-stamp" id="ticket-stamp" hidden>ON YOUR SHELF</span></aside>
+          <!-- I slide my personal recommendation out like a small paper note. -->
+          <p class="cinema-note" id="cinema-note">Grab a blanket and some popcorn. Choose your platforms and find a film from Valentina’s favourites.</p>
+          <div class="cinema-image-wrap"><span id="cinema-poster-fallback">Your next<br>favourite film.</span><img id="cinema-poster" alt="" hidden></div>
+        </div>
+        <!-- I add a faint projector beam behind the curtains and keep it out of the click area. -->
+        <div class="cinema-projector" aria-hidden="true"><div class="cinema-projector-dust"></div></div>
+        <!-- I build the decorative audience here and layer the seat backs in front. -->
+        <div class="cinema-auditorium" aria-hidden="true"><div class="cinema-audience" id="cinema-audience"></div><div class="cinema-seats" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+      </section>
+      <!-- I keep the curtain control outside the covered screen so it always stays usable. -->
+      <div class="cinema-caption"><button type="button" id="curtain-toggle" class="curtain-toggle" aria-expanded="true" aria-controls="cinema-screen">Close curtains</button><nav class="feature-numbers" id="feature-numbers" aria-label="Choose a featured film" hidden></nav></div>
+
+      <!-- I open the programme as a separate view so the first visit stays focused on the cinema. -->
+      <nav class="enter-programme" id="film-invitation" aria-label="Next step"><a href="#find-a-film">Find a film for your kind of night <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></nav>
+      </section>
+      <section id="programme-view" aria-label="Find a film" hidden>
+      <a class="return-cinema" href="#cinema"><svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5m7-7-7 7 7 7"/></svg> Back to the cinema</a>
+      <!-- I explain how the visitor can find a film from my collection. -->
+      <div class="questionnaire-intro"><p class="brand-eyebrow">First, set the scene</p><h2 tabindex="-1" id="programme-title">A film for your kind of night.</h2><p>Your platforms. Your mood. Something from Valentina’s favourites, picked for you.</p></div>
+      <!-- I let visitors finish their choices before revealing the matching films with Find movies. -->
+      <form class="questionnaire" id="form">
+        <fieldset>
+          <!-- I let visitors choose several platforms. These values match the movie data exactly. -->
+          <legend>1. Which platforms do you have?</legend>
+          <p class="hint">Tap the logos. Choose all that apply.</p>
+          <div class="tiles">
+            <label class="tile"><input type="checkbox" name="platform" value="Netflix"><span class="logo brand-netflix">Netflix</span><span class="tile-name">Netflix</span></label>
+            <label class="tile"><input type="checkbox" name="platform" value="Prime Video"><span class="logo brand-prime">prime video</span><span class="tile-name">Prime Video</span></label>
+            <label class="tile"><input type="checkbox" name="platform" value="Disney+"><span class="logo brand-disney">Disney+</span><span class="tile-name">Disney+</span></label>
+            <label class="tile"><input type="checkbox" name="platform" value="HBO Max"><span class="logo brand-hbo">HBO max</span><span class="tile-name">HBO Max</span></label>
+            <label class="tile"><input type="checkbox" name="platform" value="Movistar Plus+"><span class="logo brand-movistar">Movistar+</span><span class="tile-name">Movistar Plus+</span></label>
+            <label class="tile"><input type="checkbox" name="platform" value="Apple TV"><span class="logo brand-apple">tv</span><span class="tile-name">Apple TV</span></label>
+            <label class="tile"><input type="checkbox" name="platform" value="SkyShowtime"><span class="logo brand-sky">SkyShowtime</span><span class="tile-name">SkyShowtime</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <!-- I let visitors choose several genres, using the lowercase names from the movie data. -->
+          <legend>2. Which genres do you like?</legend>
+          <p class="hint">Choose as many as you want.</p>
+          <div class="options">
+            <label class="chip"><input type="checkbox" name="genre" value="action"><span>Action</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="comedy"><span>Comedy</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="drama"><span>Drama</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="thriller"><span>Thriller</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="horror"><span>Horror</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="romance"><span>Romance</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="sci-fi"><span>Sci-fi</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="fantasy"><span>Fantasy</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="animation"><span>Animation</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="family"><span>Family</span></label>
+            <label class="chip"><input type="checkbox" name="genre" value="documentary"><span>Documentary</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <!-- I use radio buttons for one mood at a time, starting with Surprise me. -->
+          <legend>3. What's your mood tonight?</legend>
+          <p class="hint">Choose the feeling you want from tonight’s film.</p>
+          <div class="options">
+            <label class="chip"><input type="radio" name="mood" value="any" checked><span>Surprise me</span></label>
+            <label class="chip"><input type="radio" name="mood" value="feel-good"><span>Feel-good</span></label>
+            <label class="chip"><input type="radio" name="mood" value="funny"><span>Funny</span></label>
+            <label class="chip"><input type="radio" name="mood" value="emotional"><span>Emotional</span></label>
+            <label class="chip"><input type="radio" name="mood" value="tense"><span>Tense</span></label>
+            <label class="chip"><input type="radio" name="mood" value="dark"><span>Dark</span></label>
+            <label class="chip"><input type="radio" name="mood" value="thoughtful"><span>Thoughtful</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <!-- I use 2010 as the dividing line between older and newer films. -->
+          <legend>4. Newer or older movies?</legend>
+          <div class="options">
+            <label class="chip"><input type="radio" name="era" value="any" checked><span>I don't mind</span></label>
+            <label class="chip"><input type="radio" name="era" value="newer"><span>Newer (2010 or later)</span></label>
+            <label class="chip"><input type="radio" name="era" value="older"><span>Older (before 2010)</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <!-- I let visitors set a preference for the original language of the film. -->
+          <legend>5. Original language</legend>
+          <label for="language" class="hint">Most movies in Spain are also dubbed. This is the language the movie was made in.</label>
+          <select id="language" name="language">
+            <option value="any">Any language</option>
+            <option value="Spanish">Spanish</option>
+            <option value="English">English</option>
+            <option value="French">French</option>
+            <option value="Korean">Korean</option>
+            <option value="Japanese">Japanese</option>
+          </select>
+        </fieldset>
+
+        <!-- I announce the changing result count politely and group the surprise and reset controls here. -->
+        <div class="summary" aria-live="polite">
+          <div>
+            <p class="summary-count"><span id="match-count">0</span> <span id="match-text">movies match your answers</span></p>
+            <p class="summary-hint">Stuck choosing? Press "Surprise me" and a film will be picked for you.</p>
+          </div>
+          <div class="form-buttons">
+            <!-- I put a small popcorn interaction by the film picker, away from the cinema screen. -->
+            <div class="snack-break"><button type="button" class="popcorn-button" id="popcorn-button" aria-label="Pop some popcorn" title="Pop some popcorn"><span class="popcorn-top" aria-hidden="true"></span><span class="popcorn-bucket" aria-hidden="true">POP</span></button><span class="popcorn-burst" aria-hidden="true"></span><span class="snack-status" role="status" aria-live="polite"></span></div>
+            <button type="submit" id="find-movies-button" aria-controls="film-results">Find movies</button><button type="button" id="surprise-button">Surprise me</button>
+            <button type="button" id="reset-button" class="secondary-button">Start over</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- I keep this hidden section because the base script still looks up its IDs. -->
+      <section id="spotlight" class="spotlight hidden" aria-live="polite">
+        <p class="spotlight-label">Tonight's pick</p>
+        <p id="spotlight-title" class="spotlight-title"></p>
+        <p id="spotlight-note"></p>
+        <p id="spotlight-platforms" class="spotlight-platforms"></p>
+      </section>
+
+      <!-- I leave this container empty for JavaScript to add the matching movie cards. -->
+      <section class="results" id="film-results" aria-live="polite" hidden tabindex="-1">
+        <h2>Valentina’s favourites, picked for you</h2>
+        <p id="message">Choose your platforms and your movies will appear here.</p>
+        <!-- I offer clear ways forward without silently changing anyone's preferences. -->
+        <div id="no-match-options" hidden><div class="no-match-actions"><button type="button" id="relax-mood">Keep the genre, change the mood</button><button type="button" id="relax-genre">Keep the mood, explore other genres</button></div><p class="hint" id="no-match-help"></p></div>
+        <p class="hint">Tap a movie poster to open its DVD case and see the film details and where to watch. Choose “Convince me” for Valentina’s spoiler-free recommendation, or tap the heart to save it.</p>
+        <div class="cards" id="cards"></div>
+        <button type="button" id="more-button" class="secondary-button hidden">Show me different ones</button>
+      </section>
+
+
+      </section>
+      <section id="saved-view" aria-label="Your shelf" hidden>
+        
+      <!-- I use the saved-film section as a DVD shelf, with a message while it is empty. -->
+      <section id="watchlist" class="watchlist">
+        <div class="watchlist-header"><h2>Your shelf</h2><span class="brand-eyebrow">Coming soon to your sofa</span></div>
+        <p class="hint">All those “we should watch that” films, finally in one place. Hover over a case or select it to take a closer look.</p>
+        <div class="watchlist-list" id="watchlist-list"></div><div class="shelf-actions"><p id="shelf-selected" hidden>Save a movie with the heart to start your collection.</p><button type="button" id="shelf-remove" class="hidden" aria-expanded="false" aria-controls="shelf-manager">Manage saved films</button></div><div id="shelf-manager" hidden aria-label="Manage saved films"></div><p class="cinema-status" id="cinema-status" role="status"></p>
+      </section>
+        <a class="return-cinema" href="#find-a-film">Find more films</a>
+      </section>
+      <section id="watched-view" aria-label="Watched films" hidden>
+        <p class="brand-eyebrow">Your collection, remembered</p>
+        <h2 id="watched-heading" tabindex="-1">Another one watched.</h2>
+        <p class="hint">The films you’ve marked as watched. You can undo a stamp whenever you want.</p>
+        <div class="watched-search-area"><label class="watched-picker" for="watched-film-search">Which film have you watched?<input type="search" id="watched-film-search" placeholder="Start typing a film title…" autocomplete="off" aria-controls="watched-search-results" aria-describedby="watched-search-count"></label><label class="watched-picker watched-browse" for="watched-film-list">Or choose from the full list<select id="watched-film-list"><option value="">Choose a film…</option></select></label><p id="watched-search-count" class="hint" role="status">Search Valentina’s collection to mark a film as watched.</p><div id="watched-search-results" aria-label="Matching films" hidden></div></div>
+        <div class="watched-spotlight" hidden>
+          <div class="watched-portrait"><img id="watched-photo" alt="" hidden><span id="watched-photo-fallback"></span><span class="seen-stamp" id="watched-spotlight-stamp" hidden>SEEN IT</span></div>
+          <div class="watched-description"><h3 id="watched-film-title"></h3><p>Keep a little record of the films you’ve watched.</p><button type="button" id="watched-mark-button" aria-pressed="false">Mark as watched</button><p id="watched-film-status" role="status">Not watched yet</p></div>
+        </div>
+        <h3 class="watched-list-heading">Your watched collection</h3>
+        <div class="cards" id="watched-cards"></div>
+        <a class="return-cinema" href="#find-a-film">Find your next film</a>
+      </section>
+      <!-- I keep the mystery game separate from the preference-based Surprise me picker. -->
+      <section id="mystery-view" aria-label="Mystery screening game" hidden>
+        <p class="brand-eyebrow">Three clues. One film. No spoilers.</p>
+        <h2>Tonight’s mystery screening</h2>
+        <p class="hint">Uncover the clues and guess a film from Valentina’s collection—or reveal the pick whenever you’re ready.</p>
+        <div class="mystery-stage" id="mystery-stage">
+          <div class="mystery-question" id="mystery-question" aria-hidden="true">?</div>
+          <img id="mystery-poster" alt="" hidden>
+          <div class="mystery-curtain mystery-left" aria-hidden="true"></div><div class="mystery-curtain mystery-right" aria-hidden="true"></div>
+          <div class="mystery-celebration" id="mystery-celebration" aria-hidden="true"></div>
+        </div>
+        <div id="mystery-game-controls">
+          <ol class="mystery-clues" id="mystery-clues" aria-label="Film clues"></ol>
+          <div class="mystery-actions"><button type="button" id="mystery-clue-button">Uncover clue 1</button><button type="button" id="mystery-reveal-button">Reveal tonight’s pick</button></div>
+          <form id="mystery-guess-form"><label for="mystery-guess">Think you know it?</label><div class="mystery-guess-row"><input type="text" id="mystery-guess" placeholder="Type the film title…" autocomplete="off"><button type="submit">Make a guess</button></div></form>
+        </div>
+        <p id="mystery-feedback" role="status"></p>
+        <div id="mystery-result" hidden><p class="brand-eyebrow">The film behind the clues</p><h3 id="mystery-title" tabindex="-1"></h3><p id="mystery-note"></p><div class="mystery-actions" id="mystery-platforms" aria-label="Open a streaming platform"></div><div class="mystery-actions"><button type="button" id="mystery-project">Show on the cinema</button><button type="button" id="mystery-next">Another mystery</button></div></div>
+      </section>
+      <!-- I tuck personal film notes into a few seats in this small cinema. -->
+      <section id="secret-seats-view" aria-label="A seat with a secret" hidden>
+        <p class="brand-eyebrow">A little closer to Valentina’s collection</p>
+        <h2>A seat with a secret</h2>
+        <p class="hint">Some films stay for the story. Others stay for the person beside you. Choose a numbered seat to discover what makes a film special to Valentina.</p>
+        <div class="secret-cinema">
+          <div class="secret-screen" aria-hidden="true">THE BEST FILMS STAY WITH YOU.</div>
+          <div class="secret-beam" aria-hidden="true"></div>
+          <div class="secret-seat-row" role="group" aria-label="Choose a seat to uncover a personal film note">
+            <span class="secret-empty-seat" aria-hidden="true"></span>
+            <button type="button" data-secret-seat="A2" aria-label="Seat A2: uncover a comfort film" aria-pressed="false" aria-controls="secret-story"><span class="secret-spark" aria-hidden="true">✦</span>A2</button>
+            <span class="secret-empty-seat" aria-hidden="true"></span>
+            <button type="button" data-secret-seat="A4" aria-label="Seat A4: uncover a film that stays with Valentina" aria-pressed="false" aria-controls="secret-story"><span class="secret-spark" aria-hidden="true">✦</span>A4</button>
+            <span class="secret-empty-seat" aria-hidden="true"></span>
+            <button type="button" data-secret-seat="A6" aria-label="Seat A6: uncover a rainy-Sunday film" aria-pressed="false" aria-controls="secret-story"><span class="secret-spark" aria-hidden="true">✦</span>A6</button>
+            <span class="secret-empty-seat" aria-hidden="true"></span>
+          </div>
+          <div class="secret-back-row" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div id="secret-story" class="secret-story" aria-live="polite" aria-atomic="true">
+          <p class="brand-eyebrow">Your seat is waiting</p>
+          <h3>Every favourite has a little story.</h3>
+          <p>Choose A2, A4 or A6 to uncover one of Valentina’s.</p>
+        </div>
+        <div id="secret-film-actions" hidden>
+          <div class="secret-film-details"><div class="secret-portrait"><img id="secret-film-photo" alt="" hidden><span id="secret-photo-fallback" aria-hidden="true"></span></div><div><p class="brand-eyebrow">Keep the evening going</p><p id="secret-film-meta"></p><button type="button" id="secret-project">Show on the cinema</button><div id="secret-platforms" class="mystery-actions" aria-label="Open a streaming platform"></div></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- I include the TMDB acknowledgement for the poster and rating data. -->
+    <footer class="site-footer">
+      <p>A Certain Kind of Cinema · Valentina’s personal collection of films</p>
+      <p>Posters and ratings: this product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+    </footer>
+    </div>
+  </body>
+</html>
